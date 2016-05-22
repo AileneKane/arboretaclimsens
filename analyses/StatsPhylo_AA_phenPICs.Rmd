@@ -1,0 +1,331 @@
+---
+title: "Phylogenetic comparison of tree traits at the Arnold Arboretum"
+author: "Ailene"
+date: "February 2016"
+output:
+  pdf_document:
+    latex_engine: xelatex
+    highlight: default
+    toc: yes
+    toc_depth: 2
+  html_document:
+    highlight: haddock
+    theme: united
+    toc: yes
+    toc_depth: 2
+  word_document: default
+---
+
+----
+
+# Summary of Approach
+
+Trait data were collected in 2014 (cores-for growth and climate sensitivity; phenology- spring budburst and leaf out dates, fall leaf color and senescence dates) and 2015 (height, LMA, wood density).
+
+##The Phylogeny
+setwd("~/Dropbox/Documents/Work/Putnam/Data_Ailene_18Feb2016_phylo")
+library(ape)
+aatree <- read.nexus("fossils.annot.tre")
+la <- read.csv("AA2015_leaf_areas.csv")
+la<-la[,1:6]
+lm<-read.csv("AA2015_leaf_mass.csv")
+lmla<-merge(la,lm,by.x = c("AccessionNum","LeafIDNum"),by.y =c("AccNum","LeafIDNum"))
+lmla2<-subset(lmla,select=c("AccessionNum", "LeafIDNum", "leaf_area_cm","leaf_mass_mg"))
+lmla2$lma<-lmla2$leaf_mass_mg/lmla2$leaf_area_cm
+lma.mn<-tapply(lmla2$lma,lmla2$AccessionNum, mean, na.rm=T)
+lma<-cbind(names(lma.mn),lma.mn)
+colnames(lma)[1]<-"AccNum"
+rownames(lma)<-NULL
+lma<-lma[-1,]
+woodmass<-read.csv("AA2015_twig_mass.csv")
+woodmass<-woodmass[,1:11]
+woodmass$dens<-(woodmass$TwigDryMass_mg/1000)/woodmass$TwigVolume_cm3
+wdens<-subset(woodmass,select=c("Species","AccessionNumber", "dens"))
+lma.wdens<-merge(lma,wdens,by.x ="AccNum",by.y ="AccessionNumber")#303 individuals for which we have both lma and wood density
+#now add height
+height<-read.csv("TraitCollectionDatasheet2015_cleaned.csv", header=T)
+height$height1<-as.numeric(height$height1)
+height$height2<-as.numeric(height$height2)
+height$mn.height<-rowMeans(height[,8:9],na.rm = T)
+height2<-subset(height,select=c("accession_no","genus","species","var_ssp","mn.height"))
+lma.wdens.ht<-merge(lma.wdens,height2,by.x="AccNum",by.y="accession_no")#283 individuals for which we have all trait and height data
+head(lma.wdens.ht)
+lma.wdens.ht[lma.wdens.ht=="<NA>"] =NA
+lma.wdens.ht$lma.mn<-as.numeric(as.character(lma.wdens.ht$lma.mn))
+lma.wdens.ht$dens<-as.numeric(as.character(lma.wdens.ht$dens))
+lma.wdens.ht$mn.height<-as.numeric(as.character(lma.wdens.ht$mn.height))
+lma.wdens.ht$SpName<-paste(lma.wdens.ht$genus,lma.wdens.ht$species,sep = "_")
+#add angio/gymnosperm
+lma.wdens.ht$group<-NA
+lma.wdens.ht[lma.wdens.ht$genus=="Tsuga"|lma.wdens.ht$genus=="Pinus"|lma.wdens.ht$genus=="Larix"|lma.wdens.ht$genus=="Cryptomeria"|lma.wdens.ht$genus=="Thuja"|lma.wdens.ht$genus=="Pseudotsuga"|lma.wdens.ht$genus=="Chamaecyparis"|lma.wdens.ht$genus=="Picea"|lma.wdens.ht$genus=="Abies"|lma.wdens.ht$genus=="Taxus"|lma.wdens.ht$genus=="Cedrus"|lma.wdens.ht$genus=="Calocedrus"|lma.wdens.ht$genus=="Metasequoia",]$group<-"gymnosperm"
+lma.wdens.ht[lma.wdens.ht$genus=="Liriodendron"|lma.wdens.ht$genus=="Pyrus"|lma.wdens.ht$genus=="Phellodendron"|lma.wdens.ht$genus=="Platanus"|lma.wdens.ht$genus=="Crataegus"|lma.wdens.ht$genus=="Betula"|lma.wdens.ht$genus=="Quercus"|lma.wdens.ht$genus=="Styphnolobium"|lma.wdens.ht$genus=="Gleditsia"|lma.wdens.ht$genus=="Catalpa"|lma.wdens.ht$genus=="Kalopanax"|lma.wdens.ht$genus=="Liquidambar"|lma.wdens.ht$genus=="Aesculus"|lma.wdens.ht$genus=="Carya"|lma.wdens.ht$genus=="Tilia"|lma.wdens.ht$genus=="Fagus"|lma.wdens.ht$genus=="Fraxinus"|lma.wdens.ht$genus=="Sorbus"|lma.wdens.ht$genus=="Populus"|lma.wdens.ht$genus=="Ulmus"|lma.wdens.ht$genus=="Zelkova",]$group<-"angiosperm"
+##add phenology data
+fallphen<-read.csv("FallPhenDatesDoy.csv", header=T)#need to fix the names of fall phen to match phylogeny
+springphen<-read.csv("SpringPhenDatesDoy.csv", header=T)
+
+#get traits by species (means of individual values)
+sp.lma<-tapply(lma.wdens.ht$lma.mn,lma.wdens.ht$SpName, mean, na.rm=T)
+sp.dens<-tapply(lma.wdens.ht$dens,lma.wdens.ht$SpName, mean, na.rm=T)
+sp.ht<-tapply(lma.wdens.ht$mn.height,lma.wdens.ht$SpName, mean, na.rm=T)
+
+##Fall phenology- only for angosperms...should do these separately.
+sp.pkcol<-tapply(fallphen$PeakColDOY,fallphen$Species, mean, na.rm=T)
+sp.frcol<-tapply(fallphen$FirstColDOY,fallphen$Species, mean, na.rm=T)
+sp.frdrop<-tapply(fallphen$FirstDropDOY,fallphen$Species, mean, na.rm=T)
+sp.pkdrop<-tapply(fallphen$PeakDropDOY,fallphen$Species, mean, na.rm=T)
+##Spring phenology
+sp.lfemerg<-tapply(springphen$LeafEmergdoy,springphen$Species, mean, na.rm=T)
+sp.lfbb<-tapply(springphen$LeafBBdoy,springphen$Species, mean, na.rm=T)
+sp.phen<-cbind(sp.lfemerg,sp.lfbb)#leave out fall phenology for now
+sp.traits<-cbind(sp.lma,sp.dens,sp.ht)
+
+rownames(sp.traits)[which(rownames(sp.traits)=="Abies_x")]<-"Abies_xborisii_regis"
+rownames(sp.traits)[which(rownames(sp.traits)=="Larix_gmelinii")]<-"Larix_gmelinii_var_principis_rupprechtii"
+rownames(sp.traits)[which(rownames(sp.traits)=="Ulmus_laciniata")]<-"Ulmus_laciniata_var_nikkoensis"
+
+# Remove species for which we don't have complete data (i.e. keep only those for which we hae spring phen data and trait data)
+sp.traits <- na.omit(sp.traits)
+sp.traits <- as.data.frame(sp.traits)
+species.to.exclude.phen<-rownames(sp.phen)[!(rownames(sp.phen) %in% rownames(sp.traits))]
+sp.phen2<-sp.phen[!row.names(sp.phen)%in%species.to.exclude.phen,]
+sp.traits2<-cbind(sp.traits,sp.phen2)
+#add angiosperm/gymnosperm to the data:
+sp.traits2$group<-c(rep("angiosperm",times=6),rep("gymnosperm",times=2),rep("angiosperm",times=7),rep("gymnosperm",times=4),rep("angiosperm",times=2),"gymnosperm","angiosperm",rep("gymnosperm",times=19),rep("angiosperm",times=2),"gymnosperm",rep("angiosperm",times=11),rep("gymnosperm",times=2),rep("angiosperm",times=2),"gymnosperm",rep("angiosperm",times=2))
+# Remove species in the tree that are not in the data matrix
+species.to.exclude <- aatree$tip.label[!(aatree$tip.label %in% 
+                                                   rownames(sp.traits2))]
+aatree <- drop.tip(aatree,species.to.exclude)
+rm(species.to.exclude)
+
+# Order the data in the same order as the tip.label of the tree. 
+sp.traits2<- sp.traits2[aatree$tip.label,]
+
+## Calculate contrasts
+
+We will now calculate independent contrasts using the `pic` function in `ape`. First, let's create numeric vectors for three traits: wood density (Wd), leaf mass area (LMA), and height (Ht). We will add fall and spring phenology later (dates of bud burst,leafout,leaf coloration, and senesence).
+
+```{r "Calculating_Contrasts", warning=FALSE}
+# Extract trait data into vectors
+Wd <- sp.traits2$sp.dens
+LMA <-sp.traits2$sp.lma
+Ht <- sp.traits2$sp.ht
+LEmerg<-sp.traits2$sp.lfemerg
+LBB<-sp.traits2$sp.lfbb
+# Important: Give names to your vectors
+names(Wd) <- names(LMA)  <- names(Ht) <-names(LEmerg) <-names(LBB)<- row.names(sp.traits2)
+```
+
+Now, contrats will be calculated for each trait. For each trait, a contrast will be calculated for each node. So if there are $n$ species in your tree, $n-1$ contrasts will be estimated. Note that contrasts are estimated for each character individually.
+
+```{r "Calculating_Contrasts_2", warning=FALSE}
+# Calculate the contrasts for each trait that have been scaled using the expected
+# variances
+Wd.contrast <- pic(Wd,aatree,scaled=TRUE)
+LMA.contrast <- pic(LMA,aatree,scaled=TRUE)
+Ht.contrast <- pic(Ht,aatree,scaled=TRUE)
+LEmerg.contrast <- pic(LEmerg,aatree,scaled=TRUE)
+LBB.contrast <- pic(LBB,aatree,scaled=TRUE)
+```
+
+## Display contrasts
+
+You can display the contrasts at the nodes of the phylogeny.
+
+```{r "Plot_contrasts", warning=FALSE, fig.height=9, fig.width=9}
+quartz(height=7,width=10)
+plot(aatree, label.offset=0.5,cex=0.4)
+nodelabels(round(Wd.contrast, 2), adj = c(-0.1, -2), frame="n",cex=0.3)
+nodelabels(round(LMA.contrast, 2), adj = c(-0.1, -0.5), frame="n",cex=0.3)
+nodelabels(round(Ht.contrast, 2), adj = c(-0.1, 1), frame="n",cex=0.3)
+nodelabels(round(LBB.contrast, 2), adj = c(-0.1, -2), frame="n",cex=0.3, col="green")
+nodelabels(round(LEmerg.contrast, 2), adj = c(-0.1, 1), frame="n",cex=0.3, col="blue")
+```
+
+If you have more of less traits in your own data, you will have to play with the `adj = c(-0.1, -2)` option to get a nice graphical representation.
+
+## Testing for statistical association between traits
+
+Test the following hypotheses:
+1) Wood density affects spring budburst date.
+2) Wood density affects leafout date.
+3) Height affects spring budburst date.
+4) Height affects leafout date.
+5) LMA affects spring budburst date.
+6) LMA affects  affects leafout date.
+
+Let's first look at a standard regression, that is not controlling for the phylogeny.
+
+```{r "Standard_regression", warning=FALSE}
+RegressLBB_wd <- lm(LBB ~ Wd)
+summary.lm(RegressLBB_wd)
+RegressLEmerg_wd <- lm(LEmerg ~ Wd)
+summary.lm(RegressLEmerg_wd)
+RegressLBB_ht <- lm(LBB ~ Ht)
+summary.lm(RegressLBB_ht)
+RegressLEmerg_ht <- lm(LEmerg ~ Ht)
+summary.lm(RegressLEmerg_ht)
+RegressLBB_LMA <- lm(LBB ~ LMA)
+summary.lm(RegressLBB_LMA)##significant!
+RegressLEmerg_LMA <- lm(LEmerg ~ LMA)
+summary.lm(RegressLEmerg_LMA)##significant!
+```
+
+No significant effect of wood density nor Ht on phenology; significant effects of LMA, though. Now let's look at the same relationships after we corrected for phylogenetic relatedness of species.
+
+```{r "PIC_regression", warning=FALSE}
+RegressLBB_wd.pic <- lm(LBB.contrast~Wd.contrast -1)
+summary.lm(RegressLBB_wd.pic)#significant!
+RegressLE_wd.pic <- lm(LEmerg.contrast~Wd.contrast -1)
+summary.lm(RegressLE_wd.pic)#ns
+RegressLBB_ht.pic <- lm(LBB.contrast~Ht.contrast -1)
+summary.lm(RegressLBB_ht.pic)#ns
+RegressLE_ht.pic <- lm(LEmerg.contrast~Ht.contrast -1)
+summary.lm(RegressLE_ht.pic)#ns
+RegressLBB_LMA.pic <- lm(LBB.contrast~LMA.contrast -1)
+summary.lm(RegressLBB_LMA.pic)#ns
+RegressLE_LMA.pic <- lm(LEmerg.contrast~LMA.contrast -1)
+summary.lm(RegressLE_LMA.pic)#significant!
+```
+> The -1 in the model specifies that the regression is through the origin (the intercept is set to zero) as recommended by Garland et al., 1992.
+
+When taking phylogenetic information into account, significant effects of wood density on BB and of LMA on leaf emergence. 
+.
+
+## Plot contrasts
+
+It is often useful to plot the contrasts to visualize the regression. This allows to check that there is indeed a linear relationship between the 2 variables:
+
+```{r "Plot_PIC_regression", fig.height=3, fig.width=3, fig.align='center'}
+library(ggplot2)
+quartz()
+par(mfrow=c(1,2))
+qplot(Wd,LBB) + geom_smooth(method="lm") + 
+  ggtitle("LBB ~ Wd")
+qplot(LMA,LEmerg) + geom_smooth(method="lm") + ggtitle("Lemerg ~ LMA")
+qplot(Wd.contrast,LBB.contrast) + geom_smooth(method="lm") + 
+  ggtitle("LBB ~ Wd")
+qplot(LMA.contrast,LEmerg.contrast) + geom_smooth(method="lm") + ggtitle("Lemerg ~ LMA")
+```
+plot(LMA,LEmerg, type="p",ylab="Leaf emergence (doy)",xlab="Leaf Mass area (mg/cm2)",bg=c("gray"), bty="l", pch=21)
+quartz()
+plot(Wd,LBB, type="p",ylab="Leaf Budburst (doy)",xlab="Wood density (mg/cm3)",bg=c("gray"), bty="l", pch=21)
+plot(LMA,LEmerg, type="p",ylab="Leaf emergence (doy)",xlab="Leaf Mass area (mg/cm2)",bg=c("blue","green")[as.factor(sp.traits2$group)], bty="l", pch=21)
+lines(abline(lm(LEmerg ~ LMA)))
+legend(20,120,legend=c("Gymnosperms","Angiosperms"),pch=21,pt.bg=c("green","blue"), bty="n")
+
+plot(Wd,LBB, type="p",ylab="Leaf Budburst (doy)",xlab="Wood density (mg/cm3)",bg=c("blue","green")[as.factor(sp.traits2$group)], bty="l", pch=21)
+lines(abline(lm(LBB ~ Wd)))
+legend(.6,160,legend=c("Gymnosperms","Angiosperms"),pch=21,pt.bg=c("green","blue"), bty="n")
+# Phylogenetic generalized least squares (PGLS)
+
+Phylogenetic generalized least squares are very similar to PIC. The idea is the same, that is to remove the effect of the evolutionary relationships of species when fitting a regression between two variables. Generalized least squares allows to user to specify a covariance structure that characterize the data and which effect should be removed when fitting the regression. The trick with PGLS is to give a covariance matrix that represents the evolutionary relationships between species. Depending on the model of evolution of the characters, the covariance matrix can be scaled using different approaches. For instance, one might assume that the character evolves under the Brownian motion model, or under an Ornstein-Uhlenbeck model where the co-variance between two species decreases exponentially according to a parameter alpha. There are several correlation structures available in `ape`. We will see some of these models in detail later in the course, for instance in lecture 5.
+
+In the present case, we will use the Brownian Motion structure, which is also the model behind PIC.
+
+```{r "PGLS"}
+library(nlme)
+# Get the correlation structure of the tree
+bm.corr <- corBrownian(phy=aatree)
+# PGLS: Ht ~ Wd
+LBB.bm.pgls <- gls(LBB ~ Wd, correlation = bm.corr)
+summary(LBB.bm.pgls)
+# PGLS: LMA ~ Wd
+LE.bm.pgls <- gls(LEmerg ~ LMA,  correlation = bm.corr)
+summary(LE.bm.pgls)
+```
+
+
+As you can see, the results are exactly the same as for the PIC results when the same model of evolution is used (here the BM model).
+###Try same analysis with gymnosperms and angiosperms separate
+gymnos<-rownames(sp.traits2[sp.traits2$group=="gymnosperm",])
+angios<-rownames(sp.traits2[sp.traits2$group=="angiosperm",])
+aatree.angio <- drop.tip(aatree,gymnos)
+rm(gymnos)
+sp.traits2_angio<-sp.traits2[sp.traits2$group=="angiosperm",]
+Wd_angio <- sp.traits2_angio$sp.dens
+LMA_angio <-sp.traits2_angio$sp.lma
+Ht_angio <- sp.traits2_angio$sp.ht
+LEmerg_angio<-sp.traits2_angio$sp.lfemerg
+LBB_angio<-sp.traits2_angio$sp.lfbb
+# Important: Give names to your vectors
+names(Wd_angio) <- names(LMA_angio)  <- names(Ht_angio) <-names(LEmerg_angio) <-names(LBB_angio)<- row.names(sp.traits2_angio)
+
+Wd_angio.contrast <- pic(Wd_angio,aatree.angio,scaled=TRUE)
+LMA_angio.contrast <- pic(LMA_angio,aatree.angio,scaled=TRUE)
+Ht_angio.contrast <- pic(Ht_angio,aatree.angio,scaled=TRUE)
+LEmerg_angio.contrast <- pic(LEmerg_angio,aatree.angio,scaled=TRUE)
+LBB_angio.contrast <- pic(LBB_angio,aatree.angio,scaled=TRUE)
+
+LBB_wd_angio.pic <- lm(LBB_angio.contrast~Wd_angio.contrast -1)
+summary(LBB_wd_angio.pic)#not significant for just angiosperms
+LE_wd_angio.pic <- lm(LEmerg_angio.contrast~Wd_angio.contrast -1)
+summary.lm(LE_wd_angio.pic)#ns
+LBB_ht_angio.pic <- lm(LBB_angio.contrast~Ht_angio.contrast -1)
+summary.lm(LBB_ht_angio.pic)#ns
+LE_ht_angio.pic <- lm(LEmerg_angio.contrast~Ht_angio.contrast -1)
+summary.lm(LE_ht_angio.pic)#ns
+LBB_LMA_angio.pic <- lm(LBB_angio.contrast~LMA_angio.contrast -1)
+summary.lm(LBB_LMA_angio.pic)#p=0.07
+LE_LMA_angio.pic <- lm(LEmerg_angio.contrast~LMA_angio.contrast -1)
+summary.lm(LE_LMA_angio.pic)#ns
+
+##Now try PGLS
+bm.corr.angio <- corBrownian(phy=aatree.angio)
+# PGLS: Ht ~ Wd
+LBB.bm.pgls.angio <- gls(LBB_angio ~ Wd_angio, correlation = bm.corr.angio)
+summary(LBB.bm.pgls.angio)
+# PGLS: LMA ~ Wd
+LE.bm.pgls.angio <- gls(LEmerg_angio ~ LMA_angio,  correlation = bm.corr.angio)
+summary(LE.bm.pgls.angio)
+
+##Now try for gymnosperms
+aatree.gymnos <- drop.tip(aatree,angios)
+rm(angios)
+sp.traits2_gymnos<-sp.traits2[sp.traits2$group=="gymnosperm",]
+Wd_gymnos <- sp.traits2_gymnos$sp.dens
+LMA_gymnos <-sp.traits2_gymnos$sp.lma
+Ht_gymnos <- sp.traits2_gymnos$sp.ht
+LEmerg_gymnos<-sp.traits2_gymnos$sp.lfemerg
+LBB_gymnos<-sp.traits2_gymnos$sp.lfbb
+# Important: Give names to your vectors
+names(Wd_gymnos) <- names(LMA_gymnos)  <- names(Ht_gymnos) <-names(LEmerg_gymnos) <-names(LBB_gymnos)<- row.names(sp.traits2_gymnos)
+
+Wd_gymnos.contrast <- pic(Wd_gymnos,aatree.gymnos,scaled=TRUE)
+LMA_gymnos.contrast <- pic(LMA_gymnos,aatree.gymnos,scaled=TRUE)
+Ht_gymnos.contrast <- pic(Ht_gymnos,aatree.gymnos,scaled=TRUE)
+LEmerg_gymnos.contrast <- pic(LEmerg_gymnos,aatree.gymnos,scaled=TRUE)
+LBB_gymnos.contrast <- pic(LBB_gymnos,aatree.gymnos,scaled=TRUE)
+
+LBB_wd_gymnos.pic <- lm(LBB_gymnos.contrast~Wd_gymnos.contrast -1)
+summary(LBB_wd_gymnos.pic)#significant for gymnos
+LE_wd_gymnos.pic <- lm(LEmerg_gymnos.contrast~Wd_gymnos.contrast -1)
+summary.lm(LE_wd_gymnos.pic)#ns
+LBB_ht_gymnos.pic <- lm(LBB_gymnos.contrast~Ht_gymnos.contrast -1)
+summary.lm(LBB_ht_gymnos.pic)#ns
+LE_ht_gymnos.pic <- lm(LEmerg_gymnos.contrast~Ht_gymnos.contrast -1)
+summary.lm(LE_ht_gymnos.pic)#ns
+LBB_LMA_gymnos.pic <- lm(LBB_gymnos.contrast~LMA_gymnos.contrast -1)
+summary.lm(LBB_LMA_gymnos.pic)#p=0.07
+LE_LMA_gymnos.pic <- lm(LEmerg_gymnos.contrast~LMA_gymnos.contrast -1)
+summary.lm(LE_LMA_gymnos.pic)#ns
+
+##Now try PGLS
+bm.corr.gymnos <- corBrownian(phy=aatree.gymnos)
+# PGLS: Ht ~ Wd
+LBB.bm.pgls.gymnos <- gls(LBB_gymnos ~ Wd_gymnos, correlation = bm.corr.gymnos)
+summary(LBB.bm.pgls.gymnos)
+# PGLS: LMA ~ Wd
+LE.bm.pgls.gymnos <- gls(LEmerg_gymnos ~ LMA_gymnos,  correlation = bm.corr.gymnos)
+summary(LE.bm.pgls.gymnos)
+quartz()
+par(mfrow=c(1,2))
+qplot(Wd_gymnos.contrast,LBB_gymnos.contrast) + geom_smooth(method="lm") + 
+  ggtitle("Gymnosperms: LBB ~ Wd")
+qplot(LMA_angio,LEmerg_angio) + geom_smooth(method="lm") + ggtitle("Angiosperms: Lemerg ~ LMA")
+
+##get a sense of the variation of traits within species
+quartz()
+boxplot(lma.wdens.ht$lma.mn~lma.wdens.ht$Species,ylab="LMA", cex.axis=.5,col=c("blue","green")[as.factor(lma.wdens.ht$group)])
+quartz()
+boxplot(lma.wdens.ht$dens~lma.wdens.ht$Species,ylab="Wood density (g/cm3)", cex.axis=.5, col=c("blue","green")[as.factor(lma.wdens.ht$group)])
+lamb<-phylosig(aatree,Wd,method="lambda")
