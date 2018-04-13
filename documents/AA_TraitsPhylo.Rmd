@@ -1,0 +1,144 @@
+---
+title: "Phylogenetic Multilevel Models for Tree Traits at Arnold Arboretum"
+author: "A.K. Ettinger, E. Wolkovich, S. Joly"
+date: "4/12/2018"
+output: pdf_document
+fig_width: 4 
+fig_height: 3
+---
+
+## Study Questions:
+1. How is phenology related to other traits?
+2. What predicts climate sensitivity?
+  +Functional traits?
+  +Phylogeny?
+  +Amount of climate change experienced?
+
+## Field Methods:
+The following trait data were collected in 2014 and 2015, from 360 individuals across 65 species of trees, all of which were of known wild origin and were growing at the Arnold Arboretum, Boston, MAssachusetts, USA:
+1. Annual growth (from increment cores)
+2. Climate sensitivity (from increment cores); 
+3. Phenology- spring budburst and leaf out dates, fall leaf color and senescence dates
+4. Height
+5. Leaf mass and leaf area
+6. Wood density (from twigs)
+
+##Phylogenetic methods:
+The complete list of taxa included in the phylogeny can be found in supplementary Table 1. In addition to the taxa included in the study, two species were added to stabilize the topology of the tree (so that the resulting phylogeny would be congruent with that of the APGIII phylogeny without having to include topological constraints in the tree search), Salix discolour and Acer saccharum, and one for placing a fossil constraint, Nelumbo nucifera. Sequences from the chloroplast genes rbcL, matK and trnL were downloaded from NCBI (Supplementary Table 2) and were aligned with MAFFT using the default settings.
+##Phylogenetic analysis
+The phylogenetic analysis was performed with BEAST vers. 1.8.2. This software implements a Bayesian approach that infer rooted ultrametic trees (i.e., with all species equidistant from the root), which is very useful for comparative evolutionary analyses. A distinct GTR + rho + I nucleotide substitution model was used for the three markers. This model was either the best model as selected by the Aikake Information Criterion (AIC) in jModeltest when fitting the models on ML tree (phyml + NNI tree swapping), or it received significant AIC weights (greater than 0.2).
+	We placed four fossil constraints on the tree to calibrate the (relaxed) molecular clock (Table X). We followed Beaulieu et al. for the choice of constraints and for the prior probabilities on the tree (see Beaulieu et al. for complete justification).
+
+## Phylogenetic multilevel models
+\par Using BRMS (Stan) to fit phylogenetic multilevel models of trait relationships (eventually will use similar models to predict climate sensitivity, too).
+```{r data, echo=FALSE}
+options(stringsAsFactors=FALSE)
+library(dplR)
+library(plyr)
+library(dplyr)
+library(lattice)
+library(lme4)
+library(RColorBrewer)
+library(ape)
+library(brms)
+library(MCMCglmm)
+#load trait files
+#leaf area
+la <- read.csv("../data/AA2015_leaf_areas.csv")
+#leaf mass
+lm<-read.csv("../data/AA2015_leaf_mass.csv")
+#twig density
+woodmass<-read.csv("../data/AA2015_twig_mass.csv")
+#tree height
+height<-read.csv("../data/TraitCollectionDatasheet2015_cleaned.csv", header=T)
+##phenology data
+springphen<-read.csv("../data/SpringPhenDatesDoy.csv", header=T)
+fallphen<-read.csv("../data/FallPhenDatesDoy.csv", header=T)
+#combine and clean trait files
+source("../analyses/cleaning/traitcleaning.R")
+source("../analyses/source/traitprep.R")
+#read in phylogeny
+aatree <- read.nexus("../data/Ailene_comb.tre")
+source("../analyses/source/treeprep.R")
+#head(traits3)
+```
+We want to model phenology as a function of traits (height, wood density, lma), with and without controlling for phylogeny. 
+
+### Multilevel model without phylogeny
+First, a model of budburst as a function of leaf mass area, without controlling for phylogeny, and including all species (gymnosperms and angiosperms):
+```{r model, echo=TRUE}
+bb_lma.mod<- brm(bb ~ lma_sp + (1|sp), 
+                     data = traits3, family = gaussian(),
+                    sample_prior = TRUE, chains = 2, cores = 2, 
+                     iter = 4000, warmup = 1000)
+
+#head(coef(bb_lma.mod))
+```
+
+```{r plot1, echo=FALSE}
+plot(marginal_effects(bb_lma.mod), points = TRUE) 
+```
+
+### Multilevel model with phylogeny
+Now, a model of budburst as a function of leaf mass area, including the phylogeny:
+
+```{r phylomodel, echo=TRUE}
+bb_lma_phylo.mod<- brm(bb ~ lma_sp + (1|phylo) + (1|sp), 
+                     data = traits3, family = gaussian(), 
+                     cov_ranef = list(phylo = A),
+                    sample_prior = TRUE, chains = 2, cores = 2, 
+                     iter = 4000, warmup = 1000,
+                    control = list(adapt_delta = 0.99))
+
+head(coef(bb_lma_phylo.mod))
+#test for phylogenetic signal
+hyp <- "sd_phylo__Intercept^2 / (sd_phylo__Intercept^2 + sigma^2) = 0"
+(hyp <- hypothesis(bb_lma_phylo.mod, hyp, class = NULL))
+
+```
+Lambda=0.55 so a phylogenetic signal?
+```{r plot2, echo=FALSE}
+plot(marginal_effects(bb_lma_phylo.mod), points = TRUE) 
+```
+
+### Multilevel model with phylogeny and with individual variation in predictor trait
+Now we will update the model with individual variability in leaf mass area: 
+```{r phyloindmodel, echo=TRUE}
+traits3$lma_spvar <- traits3$lma - traits3$lma_sp
+bb_lma_phylo_ind.mod <- update(bb_lma_phylo.mod, formula = ~ . + lma_spvar,
+                        newdata = traits3, chains = 2, cores = 2, 
+                        iter = 4000, warmup = 1000)
+summary(bb_lma_phylo_ind.mod)# 
+#plot(marginal_effects(bb_lma_phylo_ind.mod), points = TRUE) 
+
+#test for phylogenetic signal
+hyp <- "sd_phylo__Intercept^2 / (sd_phylo__Intercept^2 + sigma^2) = 0"
+(hyp <- hypothesis(bb_lma_phylo_ind.mod, hyp, class = NULL))
+```
+
+Lambda=0.54 so a phylogenetic signal?
+```{r plot3, echo=FALSE}
+plot(marginal_effects(bb_lma_phylo_ind.mod), points = TRUE) 
+```
+##Next steps:
+Try fitting models separately for angiosperms and gymnosperms
+
+```{r angiogymno, echo=FALSE}
+source("../analyses/source/sep_gymnos_angios.R")
+cols=c("lightblue", "darkgreen")
+plot(traits3$lma,traits3$bb,pch=21, bg=cols[as.numeric(as.factor(traits3$group))])
+```
+
+##Questions
+
+1. Should I analyze gymnosperms separately from angiosperms?
+-Simon says maybe! it's worth trying to see if these two groups show different patterns
+-can also add a random effects of angio/gymno
+-frequently you can have pattersn that are not consistent across the whole phylogeny. 
+2. Does this approach seem reasonable?
+-Simon says it does! he had not seen the model structure (mean plus individual difference in traits) before but he woll look into it
+3. Do people still use lambda? Are there other things I should look at/report to look at phylogenetic signal?
+-you don't need to calculate lambda separately. look at proportion of variance explained by the phylogeny (compared to species random effect)
+4. Other ideas of things to do?
+- Simon says he probably wouldn't fit models without the phylogeny- if it doesn't explain much variation than it will show up that way and shouldn't affect the estimate much. 
+
