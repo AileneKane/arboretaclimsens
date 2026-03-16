@@ -1,0 +1,968 @@
+---
+title: "Arboring Widths - Angiosperms"
+format: html
+editor: visual
+---
+
+## Tree ID Time Series for Angiosperms
+
+```{r}
+#reshape data from wider to longer format
+
+library(tidyverse)
+
+# Load data
+angio <- read.csv("Arboringwidthsangiosperms.csv")
+
+# Remove X in front of year columns by subbing "X" with nothing ""
+colnames(angio) <- sub("X", "", colnames(angio))
+
+# Pivot data
+angio_data_long <- pivot_longer(data = angio, cols = "2014":"1802", names_to = "Year", values_to = "Ringwidth", values_drop_na = TRUE)
+
+# View data
+print(angio_data_long)
+```
+
+#### Aesculus flava
+
+```{r}
+flava1 <- subset(angio_data_long, TreeName == "12651*C")
+
+flava2 <- subset(angio_data_long, TreeName == "12651*H")
+
+flava3 <- subset(angio_data_long, TreeName == "12651*I")
+
+flava4 <- subset(angio_data_long, TreeName == "925-79*B")
+
+
+plot(flava1$Year, y = flava1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Aesculus flava over time", ylim = c(0, 10))
+lines(flava2$Year, y = flava2$Ringwidth, type = "o", col = "blue")
+lines(flava3$Year, y = flava3$Ringwidth, type = "o", col = "purple")
+lines(flava4$Year, y = flava4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("top", inset = .05, title = "Tree name", c("12651*C", "12651*H", "12651*I", "925-79*B"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### Betula alleghaniensis
+
+```{r}
+alle1 <- subset(angio_data_long, TreeName == "12843*A")
+
+alle2 <- subset(angio_data_long, TreeName == "12843*C")
+
+alle3 <- subset(angio_data_long, TreeName == "12843*D")
+
+alle4 <- subset(angio_data_long, TreeName == "12843*E")
+
+alle5 <- subset(angio_data_long, TreeName == "12843*H")
+
+alle6 <- subset(angio_data_long, TreeName == "629-83*D")
+
+
+plot(alle1$Year, y = alle1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Betula alleghaniensis over time", ylim = c(0, 14))
+lines(alle2$Year, y = alle2$Ringwidth, type = "o", col = "blue")
+lines(alle3$Year, y = alle3$Ringwidth, type = "o", col = "purple")
+lines(alle4$Year, y = alle4$Ringwidth, type = "o", col = "lightgreen")
+lines(alle5$Year, y = alle5$Ringwidth, type = "o", col = "pink")
+lines(alle6$Year, y = alle6$Ringwidth, type = "o", col = "deeppink")
+
+legend("top", inset = .05, title = "Tree name", c("12843*A", "12843*C", "12843*D", "12843*E", "12843*H", "629-83*D"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.5)
+```
+
+#### Betula nigra
+
+```{r}
+betn1 <- subset(angio_data_long, TreeName == "1199*D")
+
+betn2 <- subset(angio_data_long, TreeName == "1199*J")
+
+betn3 <- subset(angio_data_long, TreeName == "1251-79*A")
+
+betn4 <- subset(angio_data_long, TreeName == "1251-79*B")
+
+betn5 <- subset(angio_data_long, TreeName == "betnig1")
+
+
+plot(betn1$Year, y = betn1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Betula nigra over time", ylim = c(0, 18))
+lines(betn2$Year, y = betn2$Ringwidth, type = "o", col = "blue")
+lines(betn3$Year, y = betn3$Ringwidth, type = "o", col = "purple")
+lines(betn4$Year, y = betn4$Ringwidth, type = "o", col = "lightgreen")
+lines(betn5$Year, y = betn5$Ringwidth, type = "o", col = "pink")
+
+legend("topleft", inset = .05, title = "Tree name", c("1199*D", "1199*J", "1251-79*A", "1251-79*B", "betnig1"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink"), horiz = TRUE, cex = 0.6)
+```
+
+#### Carpinus caroliniana
+
+```{r}
+carol1 <- subset(angio_data_long, TreeName == "970-79*B")
+
+
+plot(carol1$Year, y = carol1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Carpinus caroliniana over time")
+
+legend("topright", inset = .05, title = "Tree name", c("970-79*B"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### Carya glabra
+
+```{r}
+glab1 <- subset(angio_data_long, TreeName == "20095*A")
+
+glab2 <- subset(angio_data_long, TreeName == "20098*A")
+
+glab3 <- subset(angio_data_long, TreeName == "20101*A")
+
+glab4 <- subset(angio_data_long, TreeName == "2019*B")
+
+glab5 <- subset(angio_data_long, TreeName == "2019*C")
+
+glab6 <- subset(angio_data_long, TreeName == "2019*I")
+
+glab7 <- subset(angio_data_long, TreeName == "2019*O")
+
+glab8 <- subset(angio_data_long, TreeName == "2019*R")
+
+glab9 <- subset(angio_data_long, TreeName == "2019*S")
+
+glab10 <- subset(angio_data_long, TreeName == "6990*A")
+
+glab11 <- subset(angio_data_long, TreeName == "7873*A")
+
+glab12 <- subset(angio_data_long, TreeName == "8188*A")
+
+
+plot(glab1$Year, y = glab1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Carya glabra over time")
+lines(glab2$Year, y = glab2$Ringwidth, type = "o", col = "blue")
+lines(glab3$Year, y = glab3$Ringwidth, type = "o", col = "purple")
+lines(glab4$Year, y = glab4$Ringwidth, type = "o", col = "lightblue")
+lines(glab5$Year, y = glab5$Ringwidth, type = "o", col = "lightgreen")
+lines(glab6$Year, y = glab6$Ringwidth, type = "o", col = "pink")
+lines(glab7$Year, y = glab7$Ringwidth, type = "o", col = "red")
+lines(glab8$Year, y = glab8$Ringwidth, type = "o", col = "orange")
+lines(glab9$Year, y = glab9$Ringwidth, type = "o", col = "yellow")
+lines(glab10$Year, y = glab10$Ringwidth, type = "o", col = "deeppink")
+lines(glab11$Year, y = glab11$Ringwidth, type = "o", col = "burlywood")
+lines(glab12$Year, y = glab12$Ringwidth, type = "o", col = "black")
+
+legend("topright", inset = .05, title = "Tree name", c("20095*A", "20098*A", "20101*A", "2019*B", "2019*C", "2019*I", "2019*O", "2019*R", "2019*S", "6990*A", "7873*A", "8188*A"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "deeppink", "burlywood", "black"), horiz = TRUE, cex = 0.4)
+```
+
+#### Carya ovata
+
+```{r}
+ov1 <- subset(angio_data_long, TreeName == "12907*B")
+
+ov2 <- subset(angio_data_long, TreeName == "12907*D")
+
+ov3 <- subset(angio_data_long, TreeName == "12907*G")
+
+ov4 <- subset(angio_data_long, TreeName == "12907*I")
+
+ov5 <- subset(angio_data_long, TreeName == "12907*N")
+
+ov6 <- subset(angio_data_long, TreeName == "12907*Q")
+
+ov7 <- subset(angio_data_long, TreeName == "6986*A")
+
+ov8 <- subset(angio_data_long, TreeName == "7321*A")
+
+ov9 <- subset(angio_data_long, TreeName == "7947*A")
+
+ov10 <- subset(angio_data_long, TreeName == "carova1")
+
+ov11 <- subset(angio_data_long, TreeName == "carova2")
+
+ov12 <- subset(angio_data_long, TreeName == "carova3")
+
+
+plot(ov1$Year, y = ov1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Carya ovata over time", ylim = c(0, 9))
+lines(ov2$Year, y = ov2$Ringwidth, type = "o", col = "blue")
+lines(ov3$Year, y = ov3$Ringwidth, type = "o", col = "purple")
+lines(ov4$Year, y = ov4$Ringwidth, type = "o", col = "lightblue")
+lines(ov5$Year, y = ov5$Ringwidth, type = "o", col = "lightgreen")
+lines(ov6$Year, y = ov6$Ringwidth, type = "o", col = "pink")
+lines(ov7$Year, y = ov7$Ringwidth, type = "o", col = "red")
+lines(ov8$Year, y = ov8$Ringwidth, type = "o", col = "orange")
+lines(ov9$Year, y = ov9$Ringwidth, type = "o", col = "yellow")
+lines(ov10$Year, y = ov10$Ringwidth, type = "o", col = "deeppink")
+lines(ov11$Year, y = ov11$Ringwidth, type = "o", col = "burlywood")
+lines(ov12$Year, y = ov12$Ringwidth, type = "o", col = "black")
+
+legend("topright", inset = .05, title = "Tree name", c("12907*B", "12907*D", "12907*G", "12907*I", "12907*N", "12907*Q", "6986*A", "7321*A", "7947*A", "carova1", "carova2", "carova3"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "deeppink", "burlywood", "black"), horiz = TRUE, cex = 0.4)
+```
+
+#### Catalpa speciosa
+
+```{r}
+speci1 <- subset(angio_data_long, TreeName == "1245-79*A")
+
+speci2 <- subset(angio_data_long, TreeName == "1245-79*B")
+
+speci3 <- subset(angio_data_long, TreeName == "catspe1")
+
+speci4 <- subset(angio_data_long, TreeName == "catspe2")
+
+speci5 <- subset(angio_data_long, TreeName == "catspe3")
+
+speci6 <- subset(angio_data_long, TreeName == "catspe4")
+
+
+plot(speci1$Year, y = speci1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Catalpa speciosa over time")
+lines(speci2$Year, y = speci2$Ringwidth, type = "o", col = "blue")
+lines(speci3$Year, y = speci3$Ringwidth, type = "o", col = "purple")
+lines(speci4$Year, y = speci4$Ringwidth, type = "o", col = "lightgreen")
+lines(speci5$Year, y = speci5$Ringwidth, type = "o", col = "pink")
+lines(speci6$Year, y = speci6$Ringwidth, type = "o", col = "deeppink")
+
+legend("top", inset = .05, title = "Tree name", c("1245-79*A", "1245-79*B", "catspe1", "catspe2", "catspe3", "catspe4"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.4)
+```
+
+#### Crataegus crus-galli
+
+```{r}
+crga1 <- subset(angio_data_long, TreeName == "11913*A")
+
+crga2 <- subset(angio_data_long, TreeName == "18912*A")
+
+crga3 <- subset(angio_data_long, TreeName == "18918*A")
+
+crga4 <- subset(angio_data_long, TreeName == "5029*A")
+
+crga5 <- subset(angio_data_long, TreeName == "5053*A")
+
+crga6 <- subset(angio_data_long, TreeName == "6500*A")
+
+
+plot(crga1$Year, y = crga1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Crataegus crus-galli over time", ylim = c(0, 6))
+lines(crga2$Year, y = crga2$Ringwidth, type = "o", col = "blue")
+lines(crga3$Year, y = crga3$Ringwidth, type = "o", col = "purple")
+lines(crga4$Year, y = crga4$Ringwidth, type = "o", col = "lightgreen")
+lines(crga5$Year, y = crga5$Ringwidth, type = "o", col = "pink")
+lines(crga6$Year, y = crga6$Ringwidth, type = "o", col = "deeppink")
+
+legend("topright", inset = .05, title = "Tree name", c("11913*A", "18912*A", "18918*A", "5029*A", "5053*A", "6500*A"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.6)
+```
+
+#### Fagus engleriana
+
+```{r}
+engl1 <- subset(angio_data_long, TreeName == "383-27*A")
+
+engl2 <- subset(angio_data_long, TreeName == "383-27*B")
+
+engl3 <- subset(angio_data_long, TreeName == "7416*A")
+
+engl4 <- subset(angio_data_long, TreeName == "7416*B")
+
+
+plot(engl1$Year, y = engl1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fagus engleriana over time")
+lines(engl2$Year, y = engl2$Ringwidth, type = "o", col = "blue")
+lines(engl3$Year, y = engl3$Ringwidth, type = "o", col = "purple")
+lines(engl4$Year, y = engl4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("383-27*A", "383-27*B", "7416*A", "7416*B"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### Fagus grandifolia
+
+```{r}
+grandi1 <- subset(angio_data_long, TreeName == "14585*B")
+
+grandi2 <- subset(angio_data_long, TreeName == "14585*C")
+
+grandi3 <- subset(angio_data_long, TreeName == "14585*D")
+
+grandi4 <- subset(angio_data_long, TreeName == "14585*G")
+
+grandi5 <- subset(angio_data_long, TreeName == "14585*J")
+
+grandi6 <- subset(angio_data_long, TreeName == "14585*T")
+
+grandi7 <- subset(angio_data_long, TreeName == "14585*V")
+
+grandi8 <- subset(angio_data_long, TreeName == "14585*W")
+
+grandi9 <- subset(angio_data_long, TreeName == "26-80*A")
+
+grandi10 <- subset(angio_data_long, TreeName == "6782*B")
+
+grandi11 <- subset(angio_data_long, TreeName == "faggra1")
+
+
+plot(grandi1$Year, y = grandi1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fagus grandifolia over time")
+lines(grandi2$Year, y = grandi2$Ringwidth, type = "o", col = "blue")
+lines(grandi3$Year, y = grandi3$Ringwidth, type = "o", col = "purple")
+lines(grandi4$Year, y = grandi4$Ringwidth, type = "o", col = "lightgreen")
+lines(grandi5$Year, y = grandi5$Ringwidth, type = "o", col = "lightblue")
+lines(grandi6$Year, y = grandi6$Ringwidth, type = "o", col = "pink")
+lines(grandi7$Year, y = grandi7$Ringwidth, type = "o", col = "deeppink")
+lines(grandi8$Year, y = grandi8$Ringwidth, type = "o", col = "red")
+lines(grandi9$Year, y = grandi9$Ringwidth, type = "o", col = "orange")
+lines(grandi10$Year, y = grandi10$Ringwidth, type = "o", col = "yellow")
+lines(grandi11$Year, y = grandi11$Ringwidth, type = "o", col = "burlywood")
+
+legend("topright", inset = .05, title = "Tree name", c("14585*B", "14585*C", "14585*D", "14585*G", "14585*J", "14585*T", "14585*V", "14585*W", "26-80*A", "6782*B", "faggra1"), fill = c("darkgreen", "blue", "purple", "lightgreen", "lightblue", "pink", "deeppink", "red", "orange", "yellow", "burlywood"), horiz = TRUE, cex = 0.4)
+```
+
+#### Fraxinus chinensis
+
+```{r}
+chin1 <- subset(angio_data_long, TreeName == "14615*B")
+
+chin2 <- subset(angio_data_long, TreeName == "439-80*C")
+
+chin3 <- subset(angio_data_long, TreeName == "439-80*D")
+
+chin4 <- subset(angio_data_long, TreeName == "910-77*A")
+
+chin5 <- subset(angio_data_long, TreeName == "911-77*A")
+
+chin6 <- subset(angio_data_long, TreeName == "911-77*C")
+
+
+plot(chin1$Year, y = chin1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fraxinus chinensis over time", ylim = c(0,14))
+lines(chin2$Year, y = chin2$Ringwidth, type = "o", col = "blue")
+lines(chin3$Year, y = chin3$Ringwidth, type = "o", col = "purple")
+lines(chin4$Year, y = chin4$Ringwidth, type = "o", col = "lightgreen")
+lines(chin5$Year, y = chin5$Ringwidth, type = "o", col = "pink")
+lines(chin6$Year, y = chin6$Ringwidth, type = "o", col = "deeppink")
+
+legend("topleft", inset = .05, title = "Tree name", c("14615*B", "439-80*C", "439-80*D", "910-77*A", "911-77*A", "911-77*C"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.5)
+```
+
+#### Fraxinus mandschurica
+
+```{r}
+mands1 <- subset(angio_data_long, TreeName == "1265-79*D")
+
+mands2 <- subset(angio_data_long, TreeName == "1265-79*E")
+
+
+plot(mands1$Year, y = mands1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fraxinus mandschurica over time")
+lines(mands2$Year, y = mands2$Ringwidth, type = "o", col = "blue")
+
+legend("topleft", inset = .05, title = "Tree name", c("1265-79*D", "1265-79*E"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.8)
+```
+
+#### Fraxinus pennsylvanica
+
+```{r}
+penn1 <- subset(angio_data_long, TreeName == "1422-83*B")
+
+penn2 <- subset(angio_data_long, TreeName == "186-82*A")
+
+penn3 <- subset(angio_data_long, TreeName == "186-82*C")
+
+
+plot(penn1$Year, y = penn1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fraxinus pennsylvanica over time")
+lines(penn2$Year, y = penn2$Ringwidth, type = "o", col = "blue")
+lines(penn3$Year, y = penn3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("1422-83*B", "186-82*A", "186-82*C"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.7)
+```
+
+#### Fraxinus sieboldiana
+
+```{r}
+sieb1 <- subset(angio_data_long, TreeName == "537-81*A")
+
+sieb2 <- subset(angio_data_long, TreeName == "5378*A")
+
+
+plot(sieb1$Year, y = sieb1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Fraxinus sieboldiana over time")
+lines(sieb2$Year, y = sieb2$Ringwidth, type = "o", col = "blue")
+
+legend("topright", inset = .05, title = "Tree name", c("537-81*A", "5378*A"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.9)
+```
+
+#### Gleditsia triacanthos
+
+```{r}
+tria1 <- subset(angio_data_long, TreeName == "1237-79*B")
+
+tria2 <- subset(angio_data_long, TreeName == "1237-79*C")
+
+tria3 <- subset(angio_data_long, TreeName == "13218*A")
+
+
+plot(tria1$Year, y = tria1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Gleditsia triacanthos over time", ylim = c(0,15))
+lines(tria2$Year, y = tria2$Ringwidth, type = "o", col = "blue")
+lines(tria3$Year, y = tria3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("1237-79*B", "1237-79*C", "13218*A"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.6)
+```
+
+#### Kalopanax septemlobus
+
+```{r}
+sept1 <- subset(angio_data_long, TreeName == "12453*A")
+
+sept2 <- subset(angio_data_long, TreeName == "12453*C")
+
+sept3 <- subset(angio_data_long, TreeName == "kalsep1")
+
+sept4 <- subset(angio_data_long, TreeName == "kalsep2")
+
+
+plot(sept1$Year, y = sept1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Kalopanax septemlobus over time", ylim = c(0, 10))
+lines(sept2$Year, y = sept2$Ringwidth, type = "o", col = "blue")
+lines(sept3$Year, y = sept3$Ringwidth, type = "o", col = "purple")
+lines(sept4$Year, y = sept4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("top", inset = .05, title = "Tree name", c("12453*A", "12453*C", "kalsep1", "kalsep2"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### Liquidambar styraciflua
+
+```{r}
+styra1 <- subset(angio_data_long, TreeName == "1248-79*A")
+
+styra2 <- subset(angio_data_long, TreeName == "1248-79*B")
+
+styra3 <- subset(angio_data_long, TreeName == "1248-79*C?(labelled A)")
+
+
+plot(styra1$Year, y = styra1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Liquidambar styraciflua over time")
+lines(styra2$Year, y = styra2$Ringwidth, type = "o", col = "blue")
+lines(styra3$Year, y = styra3$Ringwidth, type = "o", col = "purple")
+
+legend("top", inset = .05, title = "Tree name", c("1248-79*A", "1248-79*B", "1248-79*C?(labelled A)"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.5)
+```
+
+#### Liriodendron tulipifera
+
+```{r}
+tulip1 <- subset(angio_data_long, TreeName == "1038-80*A")
+
+tulip2 <- subset(angio_data_long, TreeName == "787*B")
+
+tulip3 <- subset(angio_data_long, TreeName == "787*F")
+
+
+plot(tulip1$Year, y = tulip1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Liriodendron tulipifera over time")
+lines(tulip2$Year, y = tulip2$Ringwidth, type = "o", col = "blue")
+lines(tulip3$Year, y = tulip3$Ringwidth, type = "o", col = "purple")
+
+legend("topleft", inset = .05, title = "Tree name", c("1038-80*A", "787*B", "787*F"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.7)
+```
+
+#### Phellodendron amurense
+
+```{r}
+amur1 <- subset(angio_data_long, TreeName == "10724*B")
+
+amur2 <- subset(angio_data_long, TreeName == "1769-77*A")
+
+amur3 <- subset(angio_data_long, TreeName == "181-79*A")
+
+amur4 <- subset(angio_data_long, TreeName == "7544*B")
+
+amur5 <- subset(angio_data_long, TreeName == "7544*C")
+
+amur6 <- subset(angio_data_long, TreeName == "7544*E")
+
+amur7 <- subset(angio_data_long, TreeName == "pheamu1")
+
+amur8 <- subset(angio_data_long, TreeName == "Pheamu2")
+
+amur9 <- subset(angio_data_long, TreeName == "Pheamu3")
+
+
+plot(amur1$Year, y = amur1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Phellodendron amurense over time", ylim = c(0, 15))
+lines(amur2$Year, y = amur2$Ringwidth, type = "o", col = "blue")
+lines(amur3$Year, y = amur3$Ringwidth, type = "o", col = "purple")
+lines(amur4$Year, y = amur4$Ringwidth, type = "o", col = "lightgreen")
+lines(amur5$Year, y = amur5$Ringwidth, type = "o", col = "pink")
+lines(amur6$Year, y = amur6$Ringwidth, type = "o", col = "deeppink")
+lines(amur7$Year, y = amur7$Ringwidth, type = "o", col = "red")
+lines(amur8$Year, y = amur8$Ringwidth, type = "o", col = "orange")
+lines(amur9$Year, y = amur9$Ringwidth, type = "o", col = "burlywood")
+
+legend("bottomleft", inset = .05, title = "Tree name", c("10724*B", "1769-77*A", "181-79*A", "7544*B", "7544*C", "7544*E", "pheamu1", "Pheamu2", "Pheamu3"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink", "red", "orange", "burlywood"), horiz = TRUE, cex = 0.4)
+```
+
+#### Platanus occidentalis
+
+```{r}
+occi1 <- subset(angio_data_long, TreeName == "111-58*A")
+
+occi2 <- subset(angio_data_long, TreeName == "111-58*B")
+
+occi3 <- subset(angio_data_long, TreeName == "1236-79*A")
+
+occi4 <- subset(angio_data_long, TreeName == "1236-79*B")
+
+occi5 <- subset(angio_data_long, TreeName == "1236-79*D")
+
+occi6 <- subset(angio_data_long, TreeName == "1726-81*A")
+
+occi7 <- subset(angio_data_long, TreeName == "1726-81*B")
+
+
+plot(occi1$Year, y = occi1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Platanus occidentalis over time", ylim = c(0,20))
+lines(occi2$Year, y = occi2$Ringwidth, type = "o", col = "blue")
+lines(occi3$Year, y = occi3$Ringwidth, type = "o", col = "purple")
+lines(occi4$Year, y = occi4$Ringwidth, type = "o", col = "lightgreen")
+lines(occi5$Year, y = occi5$Ringwidth, type = "o", col = "pink")
+lines(occi6$Year, y = occi6$Ringwidth, type = "o", col = "deeppink")
+lines(occi7$Year, y = occi7$Ringwidth, type = "o", col = "burlywood")
+
+legend("topright", inset = .05, title = "Tree name", c("111-58*A", "111-58*B", "1236-79*A", "1236-79*B", "1236-79*D", "1726-81*A", "1726-81*B"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink", "burlywood"), horiz = TRUE, cex = 0.4)
+```
+
+#### *Populus deltoides*
+
+```{r}
+delto1 <- subset(angio_data_long, TreeName == "16611*F")
+
+delto2 <- subset(angio_data_long, TreeName == "16611*H")
+
+delto3 <- subset(angio_data_long, TreeName == "16611*J")
+
+delto4 <- subset(angio_data_long, TreeName == "16611*K")
+
+delto5 <- subset(angio_data_long, TreeName == "16611*O")
+
+delto6 <- subset(angio_data_long, TreeName == "popdel 2b")
+
+delto7 <- subset(angio_data_long, TreeName == "popdel 3")
+
+delto8 <- subset(angio_data_long, TreeName == "popdel 4")
+
+delto9 <- subset(angio_data_long, TreeName == "popdel 5")
+
+delto10 <- subset(angio_data_long, TreeName == "popdel1")
+
+delto11 <- subset(angio_data_long, TreeName == "popdel2a")
+
+delto12 <- subset(angio_data_long, TreeName == "popdel6")
+
+delto13 <- subset(angio_data_long, TreeName == "popdel7")
+
+delto14 <- subset(angio_data_long, TreeName == "popdel8")
+
+
+plot(delto1$Year, y = delto1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Populus deltoides over time", ylim = c(0,20))
+lines(delto2$Year, y = delto2$Ringwidth, type = "o", col = "blue")
+lines(delto3$Year, y = delto3$Ringwidth, type = "o", col = "purple")
+lines(delto4$Year, y = delto4$Ringwidth, type = "o", col = "lightgreen")
+lines(delto5$Year, y = delto5$Ringwidth, type = "o", col = "pink")
+lines(delto6$Year, y = delto6$Ringwidth, type = "o", col = "deeppink")
+lines(delto7$Year, y = delto7$Ringwidth, type = "o", col = "red")
+lines(delto8$Year, y = delto8$Ringwidth, type = "o", col = "orange")
+lines(delto9$Year, y = delto9$Ringwidth, type = "o", col = "yellow")
+lines(delto10$Year, y = delto10$Ringwidth, type = "o", col = "black")
+lines(delto11$Year, y = delto11$Ringwidth, type = "o", col = "burlywood")
+lines(delto12$Year, y = delto12$Ringwidth, type = "o", col = "turquoise")
+lines(delto13$Year, y = delto13$Ringwidth, type = "o", col = "lightblue")
+lines(delto14$Year, y = delto14$Ringwidth, type = "o", col = "brown4")
+
+legend("topleft", inset = .05, title = "Tree name", c("16611*F", "16611*H", "16611*J", "16611*K", "16611*O", "popdel 2b", "popdel 3", "popdel 4", "popdel 5", "popdel1", "popdel2a", "popdel6", "popdel7", "popdel8"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink", "red", "orange", "yellow", "black", "burlywood", "turquoise", "lightblue", "brown4"), horiz = TRUE, cex = 0.3)
+```
+
+#### *Pyrus calleryana var. dimorphophylla*
+
+```{r}
+calle1 <- subset(angio_data_long, TreeName == "250-80*A")
+
+calle2 <- subset(angio_data_long, TreeName == "250-80*E")
+
+calle3 <- subset(angio_data_long, TreeName == "731-81*B")
+
+calle4 <- subset(angio_data_long, TreeName == "731-81*F")
+
+
+plot(calle1$Year, y = calle1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pyrus calleryana var. dimorphophylla over time", ylim = c(0,12))
+lines(calle2$Year, y = calle2$Ringwidth, type = "o", col = "blue")
+lines(calle3$Year, y = calle3$Ringwidth, type = "o", col = "purple")
+lines(calle4$Year, y = calle4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("top", inset = .05, title = "Tree name", c("250-80*A", "250-80*E", "731-81*B", "731-81*F"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Pyrus pyrifolia*
+
+```{r}
+pyri1 <- subset(angio_data_long, TreeName == "10569*A")
+
+pyri2 <- subset(angio_data_long, TreeName == "23189*A")
+
+pyri3 <- subset(angio_data_long, TreeName == "7272*A_long")
+
+pyri4 <- subset(angio_data_long, TreeName == "7272*C")
+
+
+plot(pyri1$Year, y = pyri1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pyrus pyrifolia over time", ylim = c(0,10))
+lines(pyri2$Year, y = pyri2$Ringwidth, type = "o", col = "blue")
+lines(pyri3$Year, y = pyri3$Ringwidth, type = "o", col = "purple")
+lines(pyri4$Year, y = pyri4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("10569*A", "23189*A", "7272*A_long", "7272*C"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.5)
+```
+
+#### *Pyrus ussuriensis var. hondoensis*
+
+```{r}
+ussu1 <- subset(angio_data_long, TreeName == "11728*A")
+
+ussu2 <- subset(angio_data_long, TreeName == "11728*B")
+
+ussu3 <- subset(angio_data_long, TreeName == "11728*C")
+
+ussu4 <- subset(angio_data_long, TreeName == "117456*B")
+
+ussu5 <- subset(angio_data_long, TreeName == "17456*A")
+
+ussu6 <- subset(angio_data_long, TreeName == "17456*B")
+
+
+plot(ussu1$Year, y = ussu1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pyrus ussuriensis var. hondoensis over time")
+lines(ussu2$Year, y = ussu2$Ringwidth, type = "o", col = "blue")
+lines(ussu3$Year, y = ussu3$Ringwidth, type = "o", col = "purple")
+lines(ussu4$Year, y = ussu4$Ringwidth, type = "o", col = "lightgreen")
+lines(ussu5$Year, y = ussu5$Ringwidth, type = "o", col = "pink")
+lines(ussu6$Year, y = ussu6$Ringwidth, type = "o", col = "deeppink")
+
+legend("topright", inset = .05, title = "Tree name", c("11728*A", "11728*B", "11728*C", "117456*B", "17456*A", "17456*B"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Quercus alba*
+
+```{r}
+alba1 <- subset(angio_data_long, TreeName == "20513*A")
+
+alba2 <- subset(angio_data_long, TreeName == "358-82*A")
+
+alba3 <- subset(angio_data_long, TreeName == "quealb1")
+
+alba4 <- subset(angio_data_long, TreeName == "quealb10")
+
+alba5 <- subset(angio_data_long, TreeName == "quealb11")
+
+alba6 <- subset(angio_data_long, TreeName == "quealb2")
+
+alba7 <- subset(angio_data_long, TreeName == "quealb3A")
+
+alba8 <- subset(angio_data_long, TreeName == "quealb3b")
+
+alba9 <- subset(angio_data_long, TreeName == "quealb5")
+
+alba10 <- subset(angio_data_long, TreeName == "quealb6")
+
+alba11 <- subset(angio_data_long, TreeName == "quealb6A")
+
+alba12 <- subset(angio_data_long, TreeName == "quealb7")
+
+alba13 <- subset(angio_data_long, TreeName == "quealb8")
+
+alba14 <- subset(angio_data_long, TreeName == "quealb9")
+
+
+plot(alba1$Year, y = alba1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus alba over time")
+lines(alba2$Year, y = alba2$Ringwidth, type = "o", col = "blue")
+lines(alba3$Year, y = alba3$Ringwidth, type = "o", col = "purple")
+lines(alba4$Year, y = alba4$Ringwidth, type = "o", col = "lightgreen")
+lines(alba5$Year, y = alba5$Ringwidth, type = "o", col = "lightblue")
+lines(alba6$Year, y = alba6$Ringwidth, type = "o", col = "pink")
+lines(alba7$Year, y = alba7$Ringwidth, type = "o", col = "deeppink")
+lines(alba8$Year, y = alba8$Ringwidth, type = "o", col = "red")
+lines(alba9$Year, y = alba9$Ringwidth, type = "o", col = "orange")
+lines(alba10$Year, y = alba10$Ringwidth, type = "o", col = "yellow")
+lines(alba11$Year, y = alba11$Ringwidth, type = "o", col = "burlywood")
+lines(alba12$Year, y = alba12$Ringwidth, type = "o", col = "black")
+lines(alba13$Year, y = alba13$Ringwidth, type = "o", col = "turquoise")
+lines(alba14$Year, y = alba14$Ringwidth, type = "o", col = "brown4")
+
+legend("topleft", inset = .05, title = "Tree name", c("20513*A", "358-82*A", "quealb1", "quealb10", "quealb11", "quealb2", "quealb3A", "quealb3b", "quealb5", "quealb6", "quealb6A", "quealb7", "quealb8", "quealb9"), fill = c("darkgreen", "blue", "purple", "lightgreen", "lightblue", "pink", "deeppink", "red", "orange", "yellow", "burlywood", "black", "turquoise", "brown4"), horiz = TRUE, cex = 0.3)
+```
+
+#### *Quercus aliena*
+
+```{r}
+alien1 <- subset(angio_data_long, TreeName == "16795*A")
+
+alien2 <- subset(angio_data_long, TreeName == "18409*A")
+
+
+plot(alien1$Year, y = alien1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus aliena over time", ylim = c(0,11))
+lines(alien2$Year, y = alien2$Ringwidth, type = "o", col = "blue")
+
+legend("topleft", inset = .05, title = "Tree name", c("16795*A", "18409*A"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Quercus coccinea*
+
+```{r}
+cocci1 <- subset(angio_data_long, TreeName == "20517*A")
+
+cocci2 <- subset(angio_data_long, TreeName == "20517*B")
+
+cocci3 <- subset(angio_data_long, TreeName == "7598*A")
+
+cocci4 <- subset(angio_data_long, TreeName == "7598*B")
+
+cocci5 <- subset(angio_data_long, TreeName == "7598*H")
+
+cocci6 <- subset(angio_data_long, TreeName == "7598*J")
+
+
+plot(cocci1$Year, y = cocci1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus coccinea over time", ylim = c(0, 18))
+lines(cocci2$Year, y = cocci2$Ringwidth, type = "o", col = "blue")
+lines(cocci3$Year, y = cocci3$Ringwidth, type = "o", col = "purple")
+lines(cocci4$Year, y = cocci4$Ringwidth, type = "o", col = "lightgreen")
+lines(cocci5$Year, y = cocci5$Ringwidth, type = "o", col = "pink")
+lines(cocci6$Year, y = cocci6$Ringwidth, type = "o", col = "deeppink")
+
+legend("topright", inset = .05, title = "Tree name", c("20517*A", "20517*B", "7598*A", "7598*B", "7598*H", "7598*J"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.5)
+```
+
+#### *Quercus dentata*
+
+```{r}
+dent1 <- subset(angio_data_long, TreeName == "1590-52*B")
+
+dent2 <- subset(angio_data_long, TreeName == "1590-52*C")
+
+dent3 <- subset(angio_data_long, TreeName == "16815*A")
+
+dent4 <- subset(angio_data_long, TreeName == "16816*A")
+
+
+plot(dent1$Year, y = dent1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus dentata over time")
+lines(dent2$Year, y = dent2$Ringwidth, type = "o", col = "blue")
+lines(dent3$Year, y = dent3$Ringwidth, type = "o", col = "purple")
+lines(dent4$Year, y = dent4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("1590-52*B", "1590-52*C", "16815*A", "16816*A"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Quercus glandulifera*
+
+```{r}
+glandu1 <- subset(angio_data_long, TreeName == "1211-77*B")
+
+glandu2 <- subset(angio_data_long, TreeName == "1264-80*B")
+
+glandu3 <- subset(angio_data_long, TreeName == "16823*B")
+
+glandu4 <- subset(angio_data_long, TreeName == "16823*K")
+
+glandu5 <- subset(angio_data_long, TreeName == "16824*C")
+
+glandu6 <- subset(angio_data_long, TreeName == "3672*A")
+
+glandu7 <- subset(angio_data_long, TreeName == "3672*B")
+
+glandu8 <- subset(angio_data_long, TreeName == "3672*C")
+
+
+plot(glandu1$Year, y = glandu1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus glandulifera over time")
+lines(glandu2$Year, y = glandu2$Ringwidth, type = "o", col = "blue")
+lines(glandu3$Year, y = glandu3$Ringwidth, type = "o", col = "purple")
+lines(glandu4$Year, y = glandu4$Ringwidth, type = "o", col = "lightgreen")
+lines(glandu5$Year, y = glandu5$Ringwidth, type = "o", col = "pink")
+lines(glandu6$Year, y = glandu6$Ringwidth, type = "o", col = "deeppink")
+lines(glandu7$Year, y = glandu7$Ringwidth, type = "o", col = "burlywood")
+lines(glandu8$Year, y = glandu8$Ringwidth, type = "o", col = "brown4")
+
+legend("topleft", inset = .05, title = "Tree name", c("1211-77*B", "1264-80*B", "16823*B", "16823*K", "16824*C", "3672*A", "3672*B", "3672*C"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink", "burlywood", "brown4"), horiz = TRUE, cex = 0.5)
+```
+
+#### *Quercus macrocarpa*
+
+```{r}
+macro1 <- subset(angio_data_long, TreeName == "16847*E")
+
+macro2 <- subset(angio_data_long, TreeName == "16847*F")
+
+macro3 <- subset(angio_data_long, TreeName == "16847*J")
+
+macro4 <- subset(angio_data_long, TreeName == "16847*M")
+
+
+plot(macro1$Year, y = macro1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus macrocarpa over time", ylim = c(0,8))
+lines(macro2$Year, y = macro2$Ringwidth, type = "o", col = "blue")
+lines(macro3$Year, y = macro3$Ringwidth, type = "o", col = "purple")
+lines(macro4$Year, y = macro4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topleft", inset = .05, title = "Tree name", c("16847*E", "16847*F", "16847*J", "16847*M"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Quercus rubra*
+
+```{r}
+rubra1 <- subset(angio_data_long, TreeName == "11253*A")
+
+rubra2 <- subset(angio_data_long, TreeName == "16882*B")
+
+rubra3 <- subset(angio_data_long, TreeName == "5859*B")
+
+rubra4 <- subset(angio_data_long, TreeName == "8197*A")
+
+
+plot(rubra1$Year, y = rubra1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus rubra over time", ylim = c(0,12))
+lines(rubra2$Year, y = rubra2$Ringwidth, type = "o", col = "blue")
+lines(rubra3$Year, y = rubra3$Ringwidth, type = "o", col = "purple")
+lines(rubra4$Year, y = rubra4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("11253*A", "16882*B", "5859*B", "8197*A"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Quercus variabilis*
+
+```{r}
+varia1 <- subset(angio_data_long, TreeName == "1581-77*F")
+
+varia2 <- subset(angio_data_long, TreeName == "17631*A")
+
+varia3 <- subset(angio_data_long, TreeName == "17631*B")
+
+varia4 <- subset(angio_data_long, TreeName == "18053*A")
+
+varia5 <- subset(angio_data_long, TreeName == "3671*A")
+
+
+plot(varia1$Year, y = varia1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Quercus variabilis over time")
+lines(varia2$Year, y = varia2$Ringwidth, type = "o", col = "blue")
+lines(varia3$Year, y = varia3$Ringwidth, type = "o", col = "purple")
+lines(varia4$Year, y = varia4$Ringwidth, type = "o", col = "lightgreen")
+lines(varia5$Year, y = varia5$Ringwidth, type = "o", col = "pink")
+
+legend("topright", inset = .05, title = "Tree name", c("1581-77*F", "17631*A", "17631*B", "18053*A", "3671*A"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Sorbus yuana*
+
+```{r}
+yuana1 <- subset(angio_data_long, TreeName == "1539-80*A")
+
+yuana2 <- subset(angio_data_long, TreeName == "1539-80*B")
+
+yuana3 <- subset(angio_data_long, TreeName == "1539-80*C")
+
+yuana4 <- subset(angio_data_long, TreeName == "1539-80*H")
+
+yuana5 <- subset(angio_data_long, TreeName == "1539-80*I")
+
+yuana6 <- subset(angio_data_long, TreeName == "1894-80*A")
+
+yuana7 <- subset(angio_data_long, TreeName == "1894-80*B")
+
+yuana8 <- subset(angio_data_long, TreeName == "1894-80*D")
+
+yuana9 <- subset(angio_data_long, TreeName == "1894-80*G")
+
+yuana10 <- subset(angio_data_long, TreeName == "1894-80*K")
+
+
+plot(yuana1$Year, y = yuana1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Sorbus yuana over time", ylim = c(0,20))
+lines(yuana2$Year, y = yuana2$Ringwidth, type = "o", col = "blue")
+lines(yuana3$Year, y = yuana3$Ringwidth, type = "o", col = "purple")
+lines(yuana4$Year, y = yuana4$Ringwidth, type = "o", col = "lightgreen")
+lines(yuana5$Year, y = yuana5$Ringwidth, type = "o", col = "pink")
+lines(yuana6$Year, y = yuana6$Ringwidth, type = "o", col = "deeppink")
+lines(yuana7$Year, y = yuana7$Ringwidth, type = "o", col = "burlywood")
+lines(yuana8$Year, y = yuana8$Ringwidth, type = "o", col = "brown4")
+lines(yuana9$Year, y = yuana9$Ringwidth, type = "o", col = "red")
+lines(yuana10$Year, y = yuana10$Ringwidth, type = "o", col = "orange")
+
+
+legend("topleft", inset = .05, title = "Tree name", c("1539-80*A", "1539-80*B", "1539-80*C", "1539-80*H", "1539-80*I", "1894-80*A", "1894-80*B", "1894-80*D", "1894-80*G", "1894-80*K"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink", "burlywood", "brown4", "red", "orange"), horiz = TRUE, cex = 0.4)
+```
+
+#### *Styphnolobium japonicum*
+
+```{r}
+styph1 <- subset(angio_data_long, TreeName == "12221*A")
+
+styph2 <- subset(angio_data_long, TreeName == "1239-83*A")
+
+styph3 <- subset(angio_data_long, TreeName == "1239-83*C")
+
+
+plot(styph1$Year, y = styph1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Styphnolobium japonicum over time", ylim = c(0,20))
+lines(styph2$Year, y = styph2$Ringwidth, type = "o", col = "blue")
+lines(styph3$Year, y = styph3$Ringwidth, type = "o", col = "purple")
+
+
+legend("topleft", inset = .05, title = "Tree name", c("12221*A", "1239-83*A", "1239-83*C"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Tilia americana*
+
+```{r}
+ameri1 <- subset(angio_data_long, TreeName == "1323-82*A")
+
+ameri2 <- subset(angio_data_long, TreeName == "19804*A")
+
+
+plot(ameri1$Year, y = ameri1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Tilia americana over time")
+lines(ameri2$Year, y = ameri2$Ringwidth, type = "o", col = "blue")
+
+legend("topright", inset = .05, title = "Tree name", c("1323-82*A", "19804*A"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Tilia japonica*
+
+```{r}
+japon1 <- subset(angio_data_long, TreeName == "3699*D")
+
+japon2 <- subset(angio_data_long, TreeName == "772-53*A")
+
+japon3 <- subset(angio_data_long, TreeName == "945-63*A")
+
+japon4 <- subset(angio_data_long, TreeName == "tiljap")
+
+
+plot(japon1$Year, y = japon1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Tilia japonica over time")
+lines(japon2$Year, y = japon2$Ringwidth, type = "o", col = "blue")
+lines(japon3$Year, y = japon3$Ringwidth, type = "o", col = "purple")
+lines(japon4$Year, y = japon4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("3699*D", "772-53*A", "945-63*A", "tiljap"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Ulmus laciniata*
+
+```{r}
+laci1 <- subset(angio_data_long, TreeName == "17908-1*B")
+
+laci2 <- subset(angio_data_long, TreeName == "17908-1*C")
+
+laci3 <- subset(angio_data_long, TreeName == "17908*D")
+
+
+plot(laci1$Year, y = laci1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Ulmus laciniata over time")
+lines(laci2$Year, y = laci2$Ringwidth, type = "o", col = "blue")
+lines(laci3$Year, y = laci3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("17908-1*B", "17908-1*C", "17908*D"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Zelkova serrata*
+
+```{r}
+zelk1 <- subset(angio_data_long, TreeName == "1813-77*A")
+
+zelk2 <- subset(angio_data_long, TreeName == "1813-77*B")
+
+zelk3 <- subset(angio_data_long, TreeName == "1813-77*C")
+
+zelk4 <- subset(angio_data_long, TreeName == "1813-77*D")
+
+zelk5 <- subset(angio_data_long, TreeName == "1813-77*E")
+
+zelk6 <- subset(angio_data_long, TreeName == "1813-77*F")
+
+
+plot(zelk1$Year, y = zelk1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Zelkova serrata over time")
+lines(zelk2$Year, y = zelk2$Ringwidth, type = "o", col = "blue")
+lines(zelk3$Year, y = zelk3$Ringwidth, type = "o", col = "purple")
+lines(zelk4$Year, y = zelk4$Ringwidth, type = "o", col = "lightgreen")
+lines(zelk5$Year, y = zelk5$Ringwidth, type = "o", col = "pink")
+lines(zelk6$Year, y = zelk6$Ringwidth, type = "o", col = "deeppink")
+
+
+legend("topright", inset = .05, title = "Tree name", c("1813-77*A", "1813-77*B", "1813-77*C", "1813-77*D", "1813-77*E", "1813-77*F"), fill = c("darkgreen", "blue", "purple", "lightgreen", "pink", "deeppink"), horiz = TRUE, cex = 0.6)
+```

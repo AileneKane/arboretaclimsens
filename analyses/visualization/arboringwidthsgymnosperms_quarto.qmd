@@ -1,0 +1,879 @@
+---
+title: "Arboring Widths - Gymnosperms"
+format: html
+editor: visual
+---
+
+## Tree ID Time Series for Gymnosperms
+
+```{r}
+#reshape data from wider to longer format
+
+library(tidyverse)
+
+# Load data
+gymno <- read.csv("Arboringwidthsgymnosperms.csv")
+
+
+# Remove X in front of year columns by subbing "X" with nothing ""
+colnames(gymno) <- sub("X", "", colnames(gymno))
+
+# Pivot data
+gymno_data_long <- pivot_longer(data = gymno, cols = "2014":"1861", names_to = "Year", values_to = "Ringwidth", values_drop_na = TRUE)
+
+# View data
+print(gymno_data_long)
+```
+
+#### *Abies koreana*
+
+```{r}
+koreana <- subset(gymno_data_long, TreeName == "10645*A")
+
+plot(koreana$Year, y = koreana$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Abies koreana over time")
+
+legend("topright", inset = .05, title = "Tree name", c("10645*A"), fill = c("darkgreen"), horiz = TRUE)
+```
+
+#### *Abies nephrolepsis*
+
+```{r}
+nephrolepsis <- subset(gymno_data_long, TreeName == "8133*A")
+
+plot(nephrolepsis$Year, y = nephrolepsis$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Abies nephrolepis over time")
+
+legend("topright", inset = .05, title = "Tree name", c("8133*A"), fill = c("darkgreen"), horiz = TRUE)
+```
+
+#### *Abies nordmanniana*
+
+```{r}
+nord1 <- subset(gymno_data_long, TreeName == "1664-81*B")
+
+nord2 <- subset(gymno_data_long, TreeName == "779-65*A")
+
+
+plot(nord1$Year, y = nord1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Abies nordmanniana over time")
+lines(nord2$Year, y = nord2$Ringwidth, type = "o", col = "blue")
+
+legend("bottomright", inset = .05, title = "Tree name", c("1664-81*B", "779-65*A"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.8)
+
+```
+
+#### *Abies x borisii-regis*
+
+```{r}
+borisii1 <- subset(gymno_data_long, TreeName == "521-28*A")
+
+borisii2 <- subset(gymno_data_long, TreeName == "827-27*A")
+
+borisii3 <- subset(gymno_data_long, TreeName == "827-27*B")
+
+
+plot(borisii1$Year, y = borisii1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Abies x borisii-regis over time", ylim = c(0, 12))
+lines(borisii2$Year, y = borisii2$Ringwidth, type = "o", col = "blue")
+lines(borisii3$Year, y = borisii3$Ringwidth, type = "o", col = "purple")
+
+legend("topleft", inset = .05, title = "Tree name", c("521-28*A", "827-27*A", "827-27*B"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.45)
+```
+
+#### *Calocedrus decurrens*
+
+```{r}
+decurrens1 <- subset(gymno_data_long, TreeName == "292-80*A")
+
+decurrens2 <- subset(gymno_data_long, TreeName == "4000*A")
+
+decurrens3 <- subset(gymno_data_long, TreeName == "4000*D")
+
+decurrens4 <- subset(gymno_data_long, TreeName == "4000*E")
+
+
+plot(decurrens1$Year, y = decurrens1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Calocedrus decurrens over time", ylim = c(0, 10))
+lines(decurrens2$Year, y = decurrens2$Ringwidth, type = "o", col = "blue")
+lines(decurrens3$Year, y = decurrens3$Ringwidth, type = "o", col = "purple")
+lines(decurrens4$Year, y = decurrens4$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topleft", inset = .05, title = "Tree name", c("292-80*A", "4000*A", "4000*D", "4000*E"), fill = c("darkgreen", "blue", "purple", "lightgreen"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Cedrus libani*
+
+```{r}
+libani1 <- subset(gymno_data_long, TreeName == "220-60*B")
+
+libani2 <- subset(gymno_data_long, TreeName == "220-60*C")
+
+libani3 <- subset(gymno_data_long, TreeName == "220-60*D")
+
+libani4 <- subset(gymno_data_long, TreeName == "220-60*F")
+
+libani5 <- subset(gymno_data_long, TreeName == "448-68*A")
+
+libani6 <- subset(gymno_data_long, TreeName == "4697*G")
+
+libani7 <- subset(gymno_data_long, TreeName == "4697*I")
+
+libani8 <- subset(gymno_data_long, TreeName == "4697*M")
+
+libani9 <- subset(gymno_data_long, TreeName == "4697*O")
+
+libani10 <- subset(gymno_data_long, TreeName == "4697*P")
+
+
+plot(libani1$Year, y = libani1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Cedrus libani over time", ylim = c(0, 20))
+lines(libani2$Year, y = libani2$Ringwidth, type = "o", col = "blue")
+lines(libani3$Year, y = libani3$Ringwidth, type = "o", col = "purple")
+lines(libani4$Year, y = libani4$Ringwidth, type = "o", col = "lightgreen")
+lines(libani5$Year, y = libani5$Ringwidth, type = "o", col = "lightblue")
+lines(libani6$Year, y = libani6$Ringwidth, type = "o", col = "pink")
+lines(libani7$Year, y = libani7$Ringwidth, type = "o", col = "red")
+lines(libani8$Year, y = libani8$Ringwidth, type = "o", col = "orange")
+lines(libani9$Year, y = libani9$Ringwidth, type = "o", col = "yellow")
+lines(libani10$Year, y = libani10$Ringwidth, type = "o", col = "turquoise")
+
+legend("topright", inset = .05, title = "Tree name", c("220-60*B", "220-60*C", "220-60*D", "220-60*F", "448-68*A", "4697*G", "4697*I", "4697*M", "4697*O", "4697*P"), fill = c("darkgreen", "blue", "purple", "lightgreen", "lightblue", "pink", "red", "orange", "yellow", "turquoise"), horiz = TRUE, cex = 0.43)
+```
+
+#### *Chamaecyparis thyoides*
+
+```{r}
+chamae1 <- subset(gymno_data_long, TreeName == "13047*A")
+
+chamae2 <- subset(gymno_data_long, TreeName == "13047*C")
+
+
+plot(chamae1$Year, y = chamae1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Chamaecyparis thyoides over time")
+lines(chamae2$Year, y = chamae2$Ringwidth, type = "o", col = "blue")
+
+legend("topright", inset = .05, title = "Tree name", c("13047*A", "13047*C"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Larix decidua*
+
+```{r}
+larix1 <- subset(gymno_data_long, TreeName == "1171-67*B")
+
+larix2 <- subset(gymno_data_long, TreeName == "1296-83*A")
+
+larix3 <- subset(gymno_data_long, TreeName == "14937*A")
+
+larix4 <- subset(gymno_data_long, TreeName == "171-67*A")
+
+larix5 <- subset(gymno_data_long, TreeName == "19708*A")
+
+larix6 <- subset(gymno_data_long, TreeName == "239-2012*A")
+
+larix7 <- subset(gymno_data_long, TreeName == "2775*B")
+
+larix8 <- subset(gymno_data_long, TreeName == "2775*C")
+
+larix9 <- subset(gymno_data_long, TreeName == "2775*D")
+
+larix10 <- subset(gymno_data_long, TreeName == "2775*G")
+
+larix11 <- subset(gymno_data_long, TreeName == "2775*H")
+
+larix12 <- subset(gymno_data_long, TreeName == "2775*M")
+
+larix13 <- subset(gymno_data_long, TreeName == "2775*O")
+
+larix14 <- subset(gymno_data_long, TreeName == "2775*P")
+
+larix15 <- subset(gymno_data_long, TreeName == "2775*Q")
+
+
+plot(larix1$Year, y = larix1$Ringwidth, type = "o", ylim = c(0, 23), col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Larix decidua over time")
+lines(larix2$Year, y = larix2$Ringwidth, type = "o", col = "blue")
+lines(larix3$Year, y = larix3$Ringwidth, type = "o", col = "purple")
+lines(larix4$Year, y = larix4$Ringwidth, type = "o", col = "lightblue")
+lines(larix5$Year, y = larix5$Ringwidth, type = "o", col = "lightgreen")
+lines(larix6$Year, y = larix6$Ringwidth, type = "o", col = "pink")
+lines(larix7$Year, y = larix7$Ringwidth, type = "o", col = "red")
+lines(larix8$Year, y = larix8$Ringwidth, type = "o", col = "orange")
+lines(larix9$Year, y = larix9$Ringwidth, type = "o", col = "yellow")
+lines(larix10$Year, y = larix10$Ringwidth, type = "o", col = "turquoise")
+lines(larix11$Year, y = larix11$Ringwidth, type = "o", col = "black")
+lines(larix12$Year, y = larix12$Ringwidth, type = "o", col = "violet")
+lines(larix13$Year, y = larix13$Ringwidth, type = "o", col = "brown4")
+lines(larix14$Year, y = larix14$Ringwidth, type = "o", col = "burlywood")
+lines(larix15$Year, y = larix15$Ringwidth, type = "o", col = "deeppink")
+
+legend("topright", inset = .05, title = "Tree name", c("1171-67*B", "1296-83*A", "14937*A", "171-67*A", "19708*A", "239-2012*A", "2775*B", "2775*C", "2775*D", "2775*G", "2775*H", "2775*M", "2775*O", "2775*P", "2775*Q"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "turquoise", "black", "violet", "brown4", "burlywood", "deeppink"), horiz = TRUE, cex = 0.25)
+```
+
+#### *Larix gmelinii*
+
+```{r}
+gmeli1 <- subset(gymno_data_long, TreeName == "14936*B")
+
+gmeli2 <- subset(gymno_data_long, TreeName == "14936*C")
+
+gmeli3 <- subset(gymno_data_long, TreeName == "18503*A")
+
+gmeli4 <- subset(gymno_data_long, TreeName == "18503*G")
+
+gmeli5 <- subset(gymno_data_long, TreeName == "21784*B")
+
+gmeli6 <- subset(gymno_data_long, TreeName == "21784*K")
+
+
+plot(gmeli1$Year, y = gmeli1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Larix gmelinii over time")
+lines(gmeli2$Year, y = gmeli2$Ringwidth, type = "o", col = "blue")
+lines(gmeli3$Year, y = gmeli3$Ringwidth, type = "o", col = "purple")
+lines(gmeli4$Year, y = gmeli4$Ringwidth, type = "o", col = "lightblue")
+lines(gmeli5$Year, y = gmeli5$Ringwidth, type = "o", col = "lightgreen")
+lines(gmeli6$Year, y = gmeli6$Ringwidth, type = "o", col = "pink")
+
+legend("topright", inset = .05, title = "Tree name", c("14936*B", "14936*C", "18503*A", "18503*G", "21784*B", "21784*K"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Larix kaempferi*
+
+```{r}
+kaemp1 <- subset(gymno_data_long, TreeName == "1097*C")
+
+kaemp2 <- subset(gymno_data_long, TreeName == "14939*B")
+
+kaemp3 <- subset(gymno_data_long, TreeName == "152-79*A")
+
+
+plot(kaemp1$Year, y = kaemp1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Larix kaempferi over time", ylim = c(0, 50))
+lines(kaemp2$Year, y = kaemp2$Ringwidth, type = "o", col = "blue")
+lines(kaemp3$Year, y = kaemp3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("1097*C", "14939*B", "152-79*A"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Larix sibirica*
+
+```{r}
+sibi1 <- subset(gymno_data_long, TreeName == "14948*A")
+
+sibi2 <- subset(gymno_data_long, TreeName == "445-60*A")
+
+
+plot(sibi1$Year, y = sibi1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Larix sibirica over time", ylim = c(0, 15))
+lines(sibi2$Year, y = sibi2$Ringwidth, type = "o", col = "blue")
+
+legend("topleft", inset = .05, title = "Tree name", c("14948*A", "445-60*A"), fill = c("darkgreen", "blue"), horiz = TRUE)
+```
+
+#### *Picea asperata*
+
+```{r}
+aspera1 <- subset(gymno_data_long, TreeName == "21774*A")
+
+aspera2 <- subset(gymno_data_long, TreeName == "6284*G")
+
+aspera3 <- subset(gymno_data_long, TreeName == "6284-I")
+
+aspera4 <- subset(gymno_data_long, TreeName == "6992*B")
+
+aspera5 <- subset(gymno_data_long, TreeName == "6992*G")
+
+aspera6 <- subset(gymno_data_long, TreeName == "6992*W")
+
+aspera7 <- subset(gymno_data_long, TreeName == "6998*F")
+
+
+plot(aspera1$Year, y = aspera1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea asperata over time", ylim = c(0, 19))
+lines(aspera2$Year, y = aspera2$Ringwidth, type = "o", col = "blue")
+lines(aspera3$Year, y = aspera3$Ringwidth, type = "o", col = "purple")
+lines(aspera4$Year, y = aspera4$Ringwidth, type = "o", col = "lightblue")
+lines(aspera5$Year, y = aspera5$Ringwidth, type = "o", col = "lightgreen")
+lines(aspera6$Year, y = aspera6$Ringwidth, type = "o", col = "pink")
+lines(aspera7$Year, y = aspera7$Ringwidth, type = "o", col = "red")
+
+
+legend("top", inset = .05, title = "Tree name", c("21774*A", "6284*G", "6284-I", "6992*B", "6992*G", "6992*W", "6998*F"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red"), horiz = TRUE, cex = 0.55)
+```
+
+#### *Picea engelmannii*
+
+```{r}
+engel1 <- subset(gymno_data_long, TreeName == "15877*c")
+
+engel2 <- subset(gymno_data_long, TreeName == "16477*E")
+
+engel3 <- subset(gymno_data_long, TreeName == "16477*F")
+
+
+plot(engel1$Year, y = engel1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea engelmannii over time")
+lines(engel2$Year, y = engel2$Ringwidth, type = "o", col = "blue")
+lines(engel3$Year, y = engel3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("15877*c", "16477*E", "16477*F"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE)
+```
+
+#### *Picea koraiensis*
+
+```{r}
+korai1 <- subset(gymno_data_long, TreeName == "503-40*B")
+
+
+plot(korai1$Year, y = korai1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea koraiensis over time")
+
+legend("topright", inset = .05, title = "Tree name", c("503-40*B"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Picea koyamai*
+
+```{r}
+koya1 <- subset(gymno_data_long, TreeName == "7707*C")
+
+koya2 <- subset(gymno_data_long, TreeName == "7707*K")
+
+koya3 <- subset(gymno_data_long, TreeName == "7707*P")
+
+koya4 <- subset(gymno_data_long, TreeName == "7707*R")
+
+koya5 <- subset(gymno_data_long, TreeName == "7707*S")
+
+koya6 <- subset(gymno_data_long, TreeName == "7707F")
+
+koya7 <- subset(gymno_data_long, TreeName == "7707G")
+
+koya8 <- subset(gymno_data_long, TreeName == "7707M")
+
+koya9 <- subset(gymno_data_long, TreeName == "7707-Q")
+
+
+plot(koya1$Year, y = koya1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea koyamai over time", ylim = c(0, 12))
+lines(koya2$Year, y = koya2$Ringwidth, type = "o", col = "blue")
+lines(koya3$Year, y = koya3$Ringwidth, type = "o", col = "purple")
+lines(koya4$Year, y = koya4$Ringwidth, type = "o", col = "lightblue")
+lines(koya5$Year, y = koya5$Ringwidth, type = "o", col = "lightgreen")
+lines(koya6$Year, y = koya6$Ringwidth, type = "o", col = "pink")
+lines(koya7$Year, y = koya7$Ringwidth, type = "o", col = "red")
+lines(koya8$Year, y = koya8$Ringwidth, type = "o", col = "orange")
+lines(koya9$Year, y = koya9$Ringwidth, type = "o", col = "yellow")
+
+legend("topright", inset = .05, title = "Tree name", c("7707*C", "7707*K", "7707*P", "7707*R", "7707*S", "7707F", "7707G", "7707M", "7707-Q"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow"), horiz = TRUE, cex = 0.5)
+```
+
+#### *Picea meyeri*
+
+```{r}
+meye1 <- subset(gymno_data_long, TreeName == "1341-78*A")
+
+meye2 <- subset(gymno_data_long, TreeName == "1341-78*B")
+
+meye3 <- subset(gymno_data_long, TreeName == "20-48*A")
+
+meye4 <- subset(gymno_data_long, TreeName == "228-43*A")
+
+
+plot(meye1$Year, y = meye1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea meyeri over time", ylim = c(0, 12))
+lines(meye2$Year, y = meye2$Ringwidth, type = "o", col = "blue")
+lines(meye3$Year, y = meye3$Ringwidth, type = "o", col = "purple")
+lines(meye4$Year, y = meye4$Ringwidth, type = "o", col = "lightblue")
+
+legend("topright", inset = .05, title = "Tree name", c("1341-78*A", "1341-78*B", "20-48*A", "228-43*A"), fill = c("darkgreen", "blue", "purple", "lightblue"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Picea obovata*
+
+```{r}
+obovata <- subset(gymno_data_long, TreeName == "7709*B")
+
+
+plot(obovata$Year, y = obovata$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea obovata over time")
+
+legend("topright", inset = .05, title = "Tree name", c("7709*B"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Picea pungens*
+
+```{r}
+pungens <- subset(gymno_data_long, TreeName == "1476*I")
+
+
+plot(pungens$Year, y = pungens$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea pungens over time")
+
+legend("topright", inset = .05, title = "Tree name", c("1476*I"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Picea purpurea*
+
+```{r}
+purpurea1 <- subset(gymno_data_long, TreeName == "6695*H")
+
+purpurea2 <- subset(gymno_data_long, TreeName == "6995*A")
+
+
+plot(purpurea1$Year, y = purpurea1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea purpurea over time")
+lines(purpurea2$Year, y = purpurea2$Ringwidth, type = "o", col = "blue")
+
+
+legend("topright", inset = .05, title = "Tree name", c("6695*H", "6995*A"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Picea rubens*
+
+```{r}
+rubens1 <- subset(gymno_data_long, TreeName == "16511*C")
+
+rubens2 <- subset(gymno_data_long, TreeName == "16511*D")
+
+rubens3 <- subset(gymno_data_long, TreeName == "16511*E")
+
+rubens4 <- subset(gymno_data_long, TreeName == "16511*G")
+
+
+plot(rubens1$Year, y = rubens1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea rubens over time", ylim = c(0, 5))
+lines(rubens2$Year, y = rubens2$Ringwidth, type = "o", col = "blue")
+lines(rubens3$Year, y = rubens3$Ringwidth, type = "o", col = "purple")
+lines(rubens4$Year, y = rubens4$Ringwidth, type = "o", col = "lightblue")
+
+legend("topright", inset = .05, title = "Tree name", c("16511*C", "16511*D", "16511*E", "16511*G"), fill = c("darkgreen", "blue", "purple", "lightblue"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Picea wilsonii*
+
+```{r}
+wils1 <- subset(gymno_data_long, TreeName == "16515C")
+
+wils2 <- subset(gymno_data_long, TreeName == "16520P")
+
+wils3 <- subset(gymno_data_long, TreeName == "16521A")
+
+wils4 <- subset(gymno_data_long, TreeName == "16515*A")
+
+wils5 <- subset(gymno_data_long, TreeName == "16515*I")
+
+wils6 <- subset(gymno_data_long, TreeName == "16515*K")
+
+wils7 <- subset(gymno_data_long, TreeName == "16515*M")
+
+wils8 <- subset(gymno_data_long, TreeName == "16515*N")
+
+wils9 <- subset(gymno_data_long, TreeName == "16520*C")
+
+wils10 <- subset(gymno_data_long, TreeName == "16520*I")
+
+wils11 <- subset(gymno_data_long, TreeName == "16520*K")
+
+wils12 <- subset(gymno_data_long, TreeName == "7599*A")
+
+wils13 <- subset(gymno_data_long, TreeName == "16515*G")
+
+
+plot(wils1$Year, y = wils1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Picea wilsonii over time")
+lines(wils2$Year, y = wils2$Ringwidth, type = "o", col = "blue")
+lines(wils3$Year, y = wils3$Ringwidth, type = "o", col = "purple")
+lines(wils4$Year, y = wils4$Ringwidth, type = "o", col = "lightblue")
+lines(wils5$Year, y = wils5$Ringwidth, type = "o", col = "lightgreen")
+lines(wils6$Year, y = wils6$Ringwidth, type = "o", col = "pink")
+lines(wils7$Year, y = wils7$Ringwidth, type = "o", col = "red")
+lines(wils8$Year, y = wils8$Ringwidth, type = "o", col = "orange")
+lines(wils9$Year, y = wils9$Ringwidth, type = "o", col = "yellow")
+lines(wils10$Year, y = wils10$Ringwidth, type = "o", col = "turquoise")
+lines(wils11$Year, y = wils11$Ringwidth, type = "o", col = "deeppink")
+lines(wils12$Year, y = wils12$Ringwidth, type = "o", col = "burlywood")
+lines(wils13$Year, y = wils13$Ringwidth, type = "o", col = "black")
+
+legend("topright", inset = .05, title = "Tree name", c("16515C", "16520P", "16521A", "16515*A", "16515*I", "16515*K", "16515*M", "16515*N", "16520*C", "16520*I", "16520*K", "7599*A", "16515*G"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "turquoise", "deeppink", "burlywood", "black"), horiz = TRUE, cex = 0.35)
+```
+
+#### *Pinus armandii*
+
+```{r}
+armandii <- subset(gymno_data_long, TreeName == "24-49*A")
+
+
+plot(armandii$Year, y = armandii$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus armandii over time")
+
+legend("topright", inset = .05, title = "Tree name", c("24-49*A"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Pinus densiflora*
+
+```{r}
+densi1 <- subset(gymno_data_long, TreeName == "11373*B")
+
+densi2 <- subset(gymno_data_long, TreeName == "16536*C")
+
+densi3 <- subset(gymno_data_long, TreeName == "1724-77*A")
+
+densi4 <- subset(gymno_data_long, TreeName == "1724-77*B")
+
+densi5 <- subset(gymno_data_long, TreeName == "1724-77*C")
+
+
+plot(densi1$Year, y = densi1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus densiflora over time")
+lines(densi2$Year, y = densi2$Ringwidth, type = "o", col = "blue")
+lines(densi3$Year, y = densi3$Ringwidth, type = "o", col = "purple")
+lines(densi4$Year, y = densi4$Ringwidth, type = "o", col = "lightblue")
+lines(densi5$Year, y = densi5$Ringwidth, type = "o", col = "lightgreen")
+
+legend("topright", inset = .05, title = "Tree name", c("11373*B", "16536*C", "1724-77*A", "1724-77*B", "1724-77*C"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Pinus echinata*
+
+```{r}
+echin1 <- subset(gymno_data_long, TreeName == "16541*A")
+
+echin2 <- subset(gymno_data_long, TreeName == "16541*F")
+
+echin3 <- subset(gymno_data_long, TreeName == "16541*H")
+
+echin4 <- subset(gymno_data_long, TreeName == "16541*I")
+
+
+plot(echin1$Year, y = echin1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus echinata over time")
+lines(echin2$Year, y = echin2$Ringwidth, type = "o", col = "blue")
+lines(echin3$Year, y = echin3$Ringwidth, type = "o", col = "purple")
+lines(echin4$Year, y = echin4$Ringwidth, type = "o", col = "lightblue")
+
+legend("topright", inset = .05, title = "Tree name", c("16541*A", "16541*F", "16541*H", "16541*I"), fill = c("darkgreen", "blue", "purple", "lightblue"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Pinus flexilis*
+
+```{r}
+flexilis <- subset(gymno_data_long, TreeName == "254-79*A")
+
+
+plot(flexilis$Year, y = flexilis$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus flexilis over time")
+
+legend("topright", inset = .05, title = "Tree name", c("254-79*A"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
+
+#### *Pinus koraiensis*
+
+```{r}
+pkorai1 <- subset(gymno_data_long, TreeName == "11242*A")
+
+pkorai2 <- subset(gymno_data_long, TreeName == "1264-83*B")
+
+
+plot(pkorai1$Year, y = pkorai1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus koraiensis over time", ylim = c(0, 15))
+lines(pkorai2$Year, y = pkorai2$Ringwidth, type = "o", col = "blue")
+
+legend("topleft", inset = .05, title = "Tree name", c("11242*A", "1264-83*B"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Pinus nigra*
+
+```{r}
+nigra1 <- subset(gymno_data_long, TreeName == "Pinnig1")
+
+nigra2 <- subset(gymno_data_long, TreeName == "pinnig2")
+
+nigra3 <- subset(gymno_data_long, TreeName == "Pinnig3")
+
+nigra4 <- subset(gymno_data_long, TreeName == "Pinnig4")
+
+nigra5 <- subset(gymno_data_long, TreeName == "pinnig7")
+
+nigra6 <- subset(gymno_data_long, TreeName == "pinnig8")
+
+nigra7 <- subset(gymno_data_long, TreeName == "pinnig9")
+
+nigra8 <- subset(gymno_data_long, TreeName == "pinning5")
+
+nigra9 <- subset(gymno_data_long, TreeName == "pinning6")
+
+nigra10 <- subset(gymno_data_long, TreeName == "4802*C")
+
+nigra11 <- subset(gymno_data_long, TreeName == "4802*CTRUE")
+
+nigra12 <- subset(gymno_data_long, TreeName == "4802*D")
+
+nigra13 <- subset(gymno_data_long, TreeName == "4802*E")
+
+
+plot(nigra1$Year, y = nigra1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus nigra over time")
+lines(nigra2$Year, y = nigra2$Ringwidth, type = "o", col = "blue")
+lines(nigra3$Year, y = nigra3$Ringwidth, type = "o", col = "purple")
+lines(nigra4$Year, y = nigra4$Ringwidth, type = "o", col = "lightblue")
+lines(nigra5$Year, y = nigra5$Ringwidth, type = "o", col = "lightgreen")
+lines(nigra6$Year, y = nigra6$Ringwidth, type = "o", col = "pink")
+lines(nigra7$Year, y = nigra7$Ringwidth, type = "o", col = "red")
+lines(nigra8$Year, y = nigra8$Ringwidth, type = "o", col = "orange")
+lines(nigra9$Year, y = nigra9$Ringwidth, type = "o", col = "yellow")
+lines(nigra10$Year, y = nigra10$Ringwidth, type = "o", col = "turquoise")
+lines(nigra11$Year, y = nigra11$Ringwidth, type = "o", col = "deeppink")
+lines(nigra12$Year, y = nigra12$Ringwidth, type = "o", col = "burlywood")
+lines(nigra13$Year, y = nigra13$Ringwidth, type = "o", col = "black")
+
+legend("topright", inset = .05, title = "Tree name", c("Pinnig1", "pinnig2", "Pinnig3", "Pinnig4", "pinnig7", "pinnig8", "pinnig9", "pinning5", "pinning6", "4802*C", "4802*CTRUE", "4802*D", "4802*E"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "turquoise", "deeppink", "burlywood", "black"), horiz = TRUE, cex = 0.25)
+```
+
+#### *Pinus parviflora*
+
+```{r}
+parvi1 <- subset(gymno_data_long, TreeName == "1732-77*A")
+
+parvi2 <- subset(gymno_data_long, TreeName == "1732-77*B")
+
+parvi3 <- subset(gymno_data_long, TreeName == "1732-77*D")
+
+
+plot(parvi1$Year, y = parvi1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus parviflora over time", ylim = c(0, 15))
+lines(parvi2$Year, y = parvi2$Ringwidth, type = "o", col = "blue")
+lines(parvi3$Year, y = parvi3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("1732-77*A", "1732-77*B", "1732-77*D"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Pinus ponderosa*
+
+```{r}
+pond1 <- subset(gymno_data_long, TreeName == "1311-79*B")
+
+pond2 <- subset(gymno_data_long, TreeName == "1311-79*F")
+
+pond3 <- subset(gymno_data_long, TreeName == "205-80*A")
+
+pond4 <- subset(gymno_data_long, TreeName == "205-80*B")
+
+
+plot(pond1$Year, y = pond1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus ponderosa over time")
+lines(pond2$Year, y = pond2$Ringwidth, type = "o", col = "blue")
+lines(pond3$Year, y = pond3$Ringwidth, type = "o", col = "purple")
+lines(pond4$Year, y = pond4$Ringwidth, type = "o", col = "lightblue")
+
+legend("topright", inset = .05, title = "Tree name", c("1311-79*B", "1311-79*F", "205-80*A", "205-80*B"), fill = c("darkgreen", "blue", "purple", "lightblue"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Pinus resinosa*
+
+```{r}
+resin1 <- subset(gymno_data_long, TreeName == "16573*M")
+
+resin2 <- subset(gymno_data_long, TreeName == "16573*N")
+
+resin3 <- subset(gymno_data_long, TreeName == "16573*Q")
+
+
+plot(resin1$Year, y = resin1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus resinosa over time")
+lines(resin2$Year, y = resin2$Ringwidth, type = "o", col = "blue")
+lines(resin3$Year, y = resin3$Ringwidth, type = "o", col = "purple")
+
+legend("topright", inset = .05, title = "Tree name", c("16573*M", "16573*N", "16573*Q"), fill = c("darkgreen", "blue", "purple"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Pinus sylvestris*
+
+```{r}
+sylv1 <- subset(gymno_data_long, TreeName == "16589*A")
+
+sylv2 <- subset(gymno_data_long, TreeName == "16589*B")
+
+sylv3 <- subset(gymno_data_long, TreeName == "16589*G")
+
+sylv4 <- subset(gymno_data_long, TreeName == "16589*H")
+
+
+plot(sylv1$Year, y = sylv1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus sylvestris over time")
+lines(sylv2$Year, y = sylv2$Ringwidth, type = "o", col = "blue")
+lines(sylv3$Year, y = sylv3$Ringwidth, type = "o", col = "purple")
+lines(sylv4$Year, y = sylv4$Ringwidth, type = "o", col = "lightblue")
+
+legend("topright", inset = .05, title = "Tree name", c("16589*A", "16589*B", "16589*G", "16589*H"), fill = c("darkgreen", "blue", "purple", "lightblue"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Pinus tabuliformis*
+
+```{r}
+tab1 <- subset(gymno_data_long, TreeName == "113-72*H")
+
+tab2 <- subset(gymno_data_long, TreeName == "16576*H")
+
+tab3 <- subset(gymno_data_long, TreeName == "16576*I")
+
+tab4 <- subset(gymno_data_long, TreeName == "16576*J")
+
+tab5 <- subset(gymno_data_long, TreeName == "16576*N")
+
+tab6 <- subset(gymno_data_long, TreeName == "16576*R")
+
+
+plot(tab1$Year, y = tab1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus tabuliformis over time")
+lines(tab2$Year, y = tab2$Ringwidth, type = "o", col = "blue")
+lines(tab3$Year, y = tab3$Ringwidth, type = "o", col = "purple")
+lines(tab4$Year, y = tab4$Ringwidth, type = "o", col = "lightblue")
+lines(tab5$Year, y = tab5$Ringwidth, type = "o", col = "lightgreen")
+lines(tab6$Year, y = tab6$Ringwidth, type = "o", col = "pink")
+
+legend("topright", inset = .05, title = "Tree name", c("113-72*H", "16576*H", "16576*I", "16576*J", "16576*N", "16576*R"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink"), horiz = TRUE, cex = 0.7)
+```
+
+#### *Pinus thunbergii*
+
+```{r}
+thun1 <- subset(gymno_data_long, TreeName == "11371*G")
+
+thun2 <- subset(gymno_data_long, TreeName == "11371*J")
+
+thun3 <- subset(gymno_data_long, TreeName == "11371*M")
+
+thun4 <- subset(gymno_data_long, TreeName == "16592*D")
+
+thun5 <- subset(gymno_data_long, TreeName == "16592*E")
+
+
+plot(thun1$Year, y = thun1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pinus thunbergii over time")
+lines(thun2$Year, y = thun2$Ringwidth, type = "o", col = "blue")
+lines(thun3$Year, y = thun3$Ringwidth, type = "o", col = "purple")
+lines(thun4$Year, y = thun4$Ringwidth, type = "o", col = "lightblue")
+lines(thun5$Year, y = thun5$Ringwidth, type = "o", col = "lightgreen")
+
+
+legend("topright", inset = .05, title = "Tree name", c("11371*G", "11371*J", "11371*M", "16592*D", "16592*E"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen"), horiz = TRUE, cex = 0.8)
+```
+
+#### *Pseudotsuga menziesii*
+
+```{r}
+pseud1 <- subset(gymno_data_long, TreeName == "psemen3")
+
+pseud2 <- subset(gymno_data_long, TreeName == "psemen5a")
+
+pseud3 <- subset(gymno_data_long, TreeName == "psemen5b")
+
+pseud4 <- subset(gymno_data_long, TreeName == "psemen6a")
+
+pseud5 <- subset(gymno_data_long, TreeName == "psemen6b")
+
+pseud6 <- subset(gymno_data_long, TreeName == "psemen7")
+
+pseud7 <- subset(gymno_data_long, TreeName == "psemen8")
+
+pseud8 <- subset(gymno_data_long, TreeName == "1270-64*B")
+
+pseud9 <- subset(gymno_data_long, TreeName == "16780*K")
+
+pseud10 <- subset(gymno_data_long, TreeName == "16780*L")
+
+pseud11 <- subset(gymno_data_long, TreeName == "16780*M")
+
+
+
+plot(pseud1$Year, y = pseud1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Pseudotsuga menziesii over time", ylim = c(0,15))
+lines(pseud2$Year, y = pseud2$Ringwidth, type = "o", col = "blue")
+lines(pseud3$Year, y = pseud3$Ringwidth, type = "o", col = "purple")
+lines(pseud4$Year, y = pseud4$Ringwidth, type = "o", col = "lightblue")
+lines(pseud5$Year, y = pseud5$Ringwidth, type = "o", col = "lightgreen")
+lines(pseud6$Year, y = pseud6$Ringwidth, type = "o", col = "pink")
+lines(pseud7$Year, y = pseud7$Ringwidth, type = "o", col = "red")
+lines(pseud8$Year, y = pseud8$Ringwidth, type = "o", col = "orange")
+lines(pseud9$Year, y = pseud9$Ringwidth, type = "o", col = "yellow")
+lines(pseud10$Year, y = pseud10$Ringwidth, type = "o", col = "burlywood")
+lines(pseud11$Year, y = pseud11$Ringwidth, type = "o", col = "deeppink")
+
+legend("topright", inset = .05, title = "Tree name", c("psemen3", "psemen5a", "psemen5b", "psemen6a", "psemen6b", "psemen7", "psemen8", "1270-64*B", "16780*K", "16780*L", "16780*M"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "burlywood", "deeppink"), horiz = TRUE, cex = 0.4)
+```
+
+#### *Taxus cuspidata*
+
+```{r}
+cusp1 <- subset(gymno_data_long, TreeName == "17404*C")
+
+cusp2 <- subset(gymno_data_long, TreeName == "17404*D")
+
+
+plot(cusp1$Year, y = cusp1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Taxus cuspidata over time")
+lines(cusp2$Year, y = cusp2$Ringwidth, type = "o", col = "blue")
+
+legend("topright", inset = .05, title = "Tree name", c("17404*C", "17404*D"), fill = c("darkgreen", "blue"), horiz = TRUE, cex = 0.6)
+```
+
+#### *Thuja plicata*
+
+```{r}
+thuja1 <- subset(gymno_data_long, TreeName == "1225-78*A")
+
+thuja2 <- subset(gymno_data_long, TreeName == "1474-81*C")
+
+thuja3 <- subset(gymno_data_long, TreeName == "1549-81*B")
+
+thuja4 <- subset(gymno_data_long, TreeName == "17515*A")
+
+thuja5 <- subset(gymno_data_long, TreeName == "17515*B")
+
+thuja6 <- subset(gymno_data_long, TreeName == "17516*A")
+
+thuja7 <- subset(gymno_data_long, TreeName == "17516*B")
+
+
+plot(thuja1$Year, y = thuja1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Thuja plicata over time", ylim = c(0, 30))
+lines(thuja2$Year, y = thuja2$Ringwidth, type = "o", col = "blue")
+lines(thuja3$Year, y = thuja3$Ringwidth, type = "o", col = "purple")
+lines(thuja4$Year, y = thuja4$Ringwidth, type = "o", col = "lightblue")
+lines(thuja5$Year, y = thuja5$Ringwidth, type = "o", col = "lightgreen")
+lines(thuja6$Year, y = thuja6$Ringwidth, type = "o", col = "pink")
+lines(thuja7$Year, y = thuja7$Ringwidth, type = "o", col = "red")
+
+legend("topright", inset = .05, title = "Tree name", c("1225-78*A", "1474-81*C", "1549-81*B", "17515*A", "17515*B", "17516*A", "17516*B"), fill = c("darkgreen", "blue", "purple", "lightblue", "lightgreen", "pink", "red"), horiz = TRUE, cex = 0.5)
+```
+
+#### *Tsuga canadensis*
+
+```{r}
+cana1 <- subset(gymno_data_long, TreeName == "1204-98*A")
+
+cana2 <- subset(gymno_data_long, TreeName == "1293-98*A")
+
+cana3 <- subset(gymno_data_long, TreeName == "2196-98*A")
+
+cana4 <- subset(gymno_data_long, TreeName == "2231-98*A")
+
+cana5 <- subset(gymno_data_long, TreeName == "23084*A")
+
+cana6 <- subset(gymno_data_long, TreeName == "23084*E")
+
+cana7 <- subset(gymno_data_long, TreeName == "23084*F")
+
+cana8 <- subset(gymno_data_long, TreeName == "23084*G")
+
+cana9 <- subset(gymno_data_long, TreeName == "238-2012*A")
+
+cana10 <- subset(gymno_data_long, TreeName == "2878-98*A")
+
+cana11 <- subset(gymno_data_long, TreeName == "368-2011*A")
+
+cana12 <- subset(gymno_data_long, TreeName == "tsucan2")
+
+cana13 <- subset(gymno_data_long, TreeName == "tsucan3")
+
+cana14 <- subset(gymno_data_long, TreeName == "tsucan4")
+
+cana15 <- subset(gymno_data_long, TreeName == "1001-98*A")
+
+cana16 <- subset(gymno_data_long, TreeName == "1058-98*A")
+
+
+plot(cana1$Year, y = cana1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Tsuga canadensis over time")
+lines(cana2$Year, y = cana2$Ringwidth, type = "o", col = "blue")
+lines(cana3$Year, y = cana3$Ringwidth, type = "o", col = "darkorchid1")
+lines(cana4$Year, y = cana4$Ringwidth, type = "o", col = "lightblue")
+lines(cana5$Year, y = cana5$Ringwidth, type = "o", col = "lightgreen")
+lines(cana6$Year, y = cana6$Ringwidth, type = "o", col = "pink")
+lines(cana7$Year, y = cana7$Ringwidth, type = "o", col = "red")
+lines(cana8$Year, y = cana8$Ringwidth, type = "o", col = "orange")
+lines(cana9$Year, y = cana9$Ringwidth, type = "o", col = "yellow")
+lines(cana10$Year, y = cana10$Ringwidth, type = "o", col = "turquoise")
+lines(cana11$Year, y = cana11$Ringwidth, type = "o", col = "burlywood")
+lines(cana12$Year, y = cana12$Ringwidth, type = "o", col = "black")
+lines(cana13$Year, y = cana13$Ringwidth, type = "o", col = "deeppink")
+lines(cana14$Year, y = cana14$Ringwidth, type = "o", col = "grey")
+lines(cana15$Year, y = cana15$Ringwidth, type = "o", col = "brown4")
+lines(cana16$Year, y = cana16$Ringwidth, type = "o", col = "darkorchid4")
+
+legend("topright", inset = .05, title = "Tree name", c("1204-98*A", "1293-98*A", "2196-98*A", "2231-98*A", "23084*A", "23084*E", "23084*F", "23084*G", "238-2012*A", "2878-98*A", "368-2011*A", "tsucan2", "tsucan3", "tsucan4", "1001-98*A", "1058-98*A"), fill = c("darkgreen", "blue", "darkorchid1", "lightblue", "lightgreen", "pink", "red", "orange", "yellow", "turquoise", "burlywood", "black", "deeppink", "grey", "brown4", "darkorchid4"), horiz = TRUE, cex = 0.2)
+```
+
+#### *Tsuga caroliniana*
+
+```{r}
+caroli1 <- subset(gymno_data_long, TreeName == "377-2012*A")
+
+
+plot(caroli1$Year, y = caroli1$Ringwidth, type = "o", col="darkgreen", xlab= "Time (in years)", ylab = "Ring Width (mm)", main = "Ring width of Tsuga caroliniana over time")
+
+legend("top", inset = .05, title = "Tree name", c("377-2012*A"), fill = c("darkgreen"), horiz = TRUE, cex = 0.9)
+```
