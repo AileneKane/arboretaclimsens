@@ -9,3 +9,9 @@ To do:
 5) Crossdate gymnosperms quatitatively
 6) Estimate climate sensitivity
 7) Fit phylogenetic models to find predictors of climate sensitivity
+
+
+
+# Google drive files
+To find WinDendro files, provenance info and coordinates of trees, images of cores, and other related info,
+you can find this in the Temporal Ecology Lab OneDrive, in a folder called "Ailene - arboretaclimsens".
