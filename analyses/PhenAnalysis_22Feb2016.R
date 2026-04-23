@@ -1,7 +1,7 @@
 ##Getting 2014 Fall and 2015 Spring phenology data in order
 ####Getting peak leaf color and peak leaf fall from my data
-setwd("/Users/aileneettinger/Dropbox/Documents/Work/Putnam/Data_Ailene_18Feb2016_phylo")
-fallphendat=read.csv("PhenData_Fall2014_10Dec.csv")
+setwd("~/GitHub/arboretaclimsens")
+fallphendat=read.csv("data/PhenData_Fall2014_10Dec.csv")
 head(fallphendat)
 colnames(fallphendat)
 fallphendat=fallphendat[1:201,]
@@ -14,6 +14,7 @@ fallphen$Date<-as.Date(fallphen$Date,"%m/%d/%Y")
 inds<-unique(fallphen$ACC_NUM)
 firstcolall=c(rep(NA,times=length(inds)))
 peakcolall=c(rep(NA,times=length(inds)))
+percfalall=c(rep(NA,times=length(inds)))
 species=c(rep(NA,times=length(inds)))
 for(i in 1:length(inds)){
   inddat=fallphen[fallphen$ACC_NUM==inds[i],]
@@ -26,6 +27,7 @@ for(i in 1:length(inds)){
   firstcolall[i]=as.character(firstcol1)
   }
 peakfallall=c(rep(NA,times=length(inds)))
+percfallall=c(rep(NA,times=length(inds)))
 firstfallall=c(rep(NA,times=length(inds)))
 for(i in 1:length(inds)){
   inddat=fallphen[fallphen$ACC_NUM==inds[i],]
