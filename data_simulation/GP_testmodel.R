@@ -1,5 +1,6 @@
 rm(list=ls())
-setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
+# setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
+setwd("/home/victor/projects/arboretaclimsens")
 
 library(dplyr)
 library(rstan)
@@ -79,7 +80,7 @@ for (i in 1:N_tree){
   f[start[i]:end[i]] <- MASS::mvrnorm(1, all_mean_data$mu_log_rw[start[i]:end[i]], cov[1:N_obs_tree[i],1:N_obs_tree[i]])
 }
 
-log_rw_sim <- rnorm(f, sd = sigma)
+log_rw_sim <- rnorm(N_obs, mean = f, sd = sigma)
 
 data_list <- list(
   N_obs = N_obs,
@@ -100,7 +101,13 @@ data_list <- list(
   log_rw_obs = log_rw_sim
 )
 
-gp_model <- stan_model('GP_fit.stan')
+i <- 5
+idxs <- start[i]:end[i]
+plot(x =  data_list$year_obs[idxs], y =  f[idxs], type = 'l', ylim = c(-1,3))
+points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
+
+
+gp_model <- stan_model('stan/GP_fit.stan')
 fit1 <- sampling(gp_model, data = data_list,
                 chains = 4, cores = 4)
 
@@ -109,3 +116,18 @@ util$check_all_hmc_diagnostics(diagnostics)
 
 samples <- util$extract_expectand_vals(fit1)
 util$check_all_expectand_diagnostics(samples)
+
+i <- 10
+idxs <- start[i]:end[i]
+names <- paste0('f[', idxs, ']')
+util$plot_conn_pushforward_quantiles(samples, names, data_list$year_obs[idxs], display_ylim = c(-1,2))
+lines(x = data_list$year_obs[idxs], y = f[idxs], col = "black", lwd = 2)
+points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
+
+names <- paste0('log_rw_pred[', idxs, ']')
+util$plot_conn_pushforward_quantiles(samples, names, data_list$year_obs[idxs], display_ylim = c(-1,2))
+lines(x = data_list$year_obs[idxs], y = f[start[i]:end[i]], col = "black", lwd = 2)
+points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
+
+util$plot_expectand_pushforward(samples[['rho']], 30, 'rho')
+util$plot_expectand_pushforward(samples[['gamma']], 30, 'gamma')
