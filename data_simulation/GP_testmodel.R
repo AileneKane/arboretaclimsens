@@ -126,8 +126,11 @@ points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
 
 names <- paste0('log_rw_pred[', idxs, ']')
 util$plot_conn_pushforward_quantiles(samples, names, data_list$year_obs[idxs], display_ylim = c(-1,2))
+lines(x = data_list$year_obs[idxs], y = f[start[i]:end[i]], col = "white", lwd = 4)
 lines(x = data_list$year_obs[idxs], y = f[start[i]:end[i]], col = "black", lwd = 2)
+points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], col = "white", cex = 2, pch = 20)
 points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
 
 util$plot_expectand_pushforward(samples[['rho']], 30, 'rho')
 util$plot_expectand_pushforward(samples[['gamma']], 30, 'gamma')
+util$plot_expectand_pushforward(samples[['beta_GDD']], 30, 'beta_GDD')
