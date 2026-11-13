@@ -1,5 +1,5 @@
 functions {
-  vector gp_pred_rng(real[] x2, vector y1, real[] x1, vector mu,
+  vector gp_pred_rng(array[] real x2, vector y1, array [] real x1, vector mu,
                      real alpha, real rho, real sigma, real delta) {
     int N1 = rows(y1);
     int N2 = size(x2);
@@ -23,31 +23,31 @@ functions {
 }
 
 data {
-  int<lower=1> N_obs; # Number of total observations
-  int<lower=1> K; # Number of species
-  int<lower=1> N_tree; # Number of trees (individuals) 
-  int<lower=1> N_all_year_obs; # Number of Years 
+  int<lower=1> N_obs; 
+  int<lower=1> K; 
+  int<lower=1> N_tree; 
+  int<lower=1> N_all_year_obs;  
   real<lower=0> GDD_base; 
   
   vector[N_obs] delta_tmp;
   vector[N_obs] delta_pre;
   vector[N_obs] GDD;
-  array[N_obs] int<lower=1, upper=K> sp; # Species listed for every obs
-  array[N_tree] int<lower=1, upper=K> sp_tree; # Species for every tree
+  array[N_obs] int<lower=1, upper=K> sp; // Species listed for every obs
+  array[N_tree] int<lower=1, upper=K> sp_tree; // Species for every tree
   array[N_tree] int<lower=1> start;
   array[N_tree] int<lower=1> end;
   
-  array[N_tree] int<lower=1, upper=N_obs> N_obs_tree; # Number of Observations per Tree
-  array[N_all_year_obs] int all_year_obs; # List of all Years Used
+  array[N_tree] int<lower=1, upper=N_obs> N_obs_tree; // Number of Observations per Tree
+  array[N_all_year_obs] int all_year_obs; // List of all Years Used
   
-  # Year and rw observations
-  real year_obs[N_obs]; 
+  // Year and rw observations
+  array[N_obs] real year_obs; 
   vector[N_obs] log_rw_obs;
 }
 
 parameters {
   // Main parameters for linear regression
-  vector[K] alpha;
+  vector[K] alpha_tilde;
   real m_alpha;
   real<lower=0> s_alpha;
   
@@ -60,13 +60,11 @@ parameters {
   real<lower=0> sigma;
   
   // Hyperparameters for GP
-  vector[K] log_rho;
-  //vector[K] log_tilde_rho;
+  vector[K] log_tilde_rho;
   real m_log_rho;
   real<lower=0> s_log_rho;
   
-  vector[K] log_gamma;
-  //vector[K] log_tilde_gamma;
+  vector[K] log_tilde_gamma;
   real m_log_gamma;
   real<lower=0> s_log_gamma;
 }
@@ -75,11 +73,15 @@ transformed parameters{
   vector[K] beta_GDD;
   beta_GDD = m_beta_GDD + s_beta_GDD * beta_tilde_GDD;
   
-  vector[K] rho;
-  rho = exp(log_rho);
-  vector[K] gamma;
-  gamma = exp(log_gamma);
+  vector[K] alpha;
+  alpha = m_alpha + s_alpha * alpha_tilde;
   
+  vector[K] rho;
+  rho = exp(m_log_rho + s_log_rho * log_tilde_rho);
+  
+  vector[K] gamma;
+  gamma = exp(m_log_gamma + s_log_gamma * log_tilde_gamma);
+
   vector[N_obs] y_clim;
   for (n in 1:N_obs){
     y_clim[n] = alpha[sp[n]] + beta_GDD[sp[n]]*(GDD[n]-GDD_base) + beta_tmp*delta_tmp[n] + beta_pre*delta_pre[n];
@@ -93,7 +95,7 @@ model {
   m_beta_GDD ~ normal(0, 0.05);
   s_beta_GDD ~ normal(0, 0.12);
   
-  alpha ~ normal(m_alpha, s_alpha);
+  alpha_tilde ~ normal(0, 1);
   beta_tilde_GDD ~ normal(0, 1);
   
   // Parameters without partial pooling
@@ -102,27 +104,25 @@ model {
   sigma ~ normal(0, 0.5);
   
   // Hyperparameters with partial pooling
-  m_log_rho ~ normal(1, 0.2);
-  s_log_rho ~ normal(0, 0.3);
+  m_log_rho ~ normal(3.05, 0.15);
+  s_log_rho ~ normal(0, 0.25);
   m_log_gamma ~ normal(-1, 0.2);
   s_log_gamma ~ normal(0, 0.3);
   
-  //log_tilde_rho ~ normal(0, 1);
-  //log_tilde_gamma ~ normal(0, 1)
-  log_rho ~ normal(m_log_rho, s_log_rho);
-  log_gamma ~ normal(m_log_gamma, s_log_gamma);
+  log_tilde_rho ~ normal(0, 1);
+  log_tilde_gamma ~ normal(0, 1);
   
   // Define an array of cholesky decomposed covariance matrices
   array[K] matrix[N_all_year_obs, N_all_year_obs] L_cov;
   
   // Calculate covariance matrix for every species
   for (species in 1:K) {
-    matrix[N_all_year_obs, N_all_year_obs] cov = gp_exp_quad_cov(all_year_obs, exp(log_gamma[species]), 
-    exp(log_rho[species])) + diag_matrix(rep_vector(square(sigma), N_all_year_obs));
+    matrix[N_all_year_obs, N_all_year_obs] cov = gp_exp_quad_cov(all_year_obs, gamma[species], 
+    rho[species]) + diag_matrix(rep_vector(square(sigma), N_all_year_obs));
     L_cov[species] = cholesky_decompose(cov);
   }
   
-  # Subset L_cov for each tree
+  // Subset L_cov for each tree
     for (i in 1:N_tree){
       matrix[N_obs_tree[i], N_obs_tree[i]] L_cov_tree = block(L_cov[sp_tree[i]], 1, 1, N_obs_tree[i], N_obs_tree[i]);
       log_rw_obs[start[i]:end[i]] ~ multi_normal_cholesky(y_clim[start[i]:end[i]], L_cov_tree);
