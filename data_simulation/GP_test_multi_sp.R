@@ -1,5 +1,6 @@
 rm(list=ls())
-setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
+#setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
+setwd('/home/victor/projects/arboretaclimsens')
 
 library(dplyr)
 library(rstan)
@@ -130,8 +131,10 @@ data_list <- list(
   log_rw_obs = log_rw_sim
 )
 
-gp_model <- stan_model('GP_multispecies.stan')
-fit1 <- sampling(gp_model, data = data_list, chains = 4, cores = 4)
+# gp_model <- stan_model('GP_multispecies.stan')
+gp_model <- stan_model('stan/GP_multispecies.stan')
+fit1 <- sampling(gp_model, data = data_list, chains = 4, cores = 4, 
+                 iter = 2000, warmup = 1000, save_warmup = FALSE)
 
 diagnostics <- util$extract_hmc_diagnostics(fit1)
 util$check_all_hmc_diagnostics(diagnostics)
