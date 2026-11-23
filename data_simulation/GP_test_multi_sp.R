@@ -1,6 +1,5 @@
 rm(list=ls())
-#setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
-setwd('/home/victor/projects/arboretaclimsens')
+setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
 
 library(dplyr)
 library(rstan)
@@ -10,18 +9,18 @@ source('mcmc_analysis_tools_rstan.R', local=util)
 source('mcmc_visualization_tools.R', local=util)
 
 # Simulate some fake climate and tree ring data
-set.seed(135)
+set.seed(235)
 
 # Initial data simulation settings 
-N_all_year_obs <- 20 # Number of Years
-N_tree <- 15 # Number of trees (individuals) 
-K_sp <- 5 # Number of species
+N_all_year_obs <- 40 # Number of Years
+N_tree <- 100 # Number of trees (individuals) 
+K_sp <- 25 # Number of species
 
 sp_id <- sample(1:K_sp, size = N_tree - K_sp, replace = TRUE)
 sp_id <- sample(c(sp_id, 1:K_sp))
 
 all_year_obs <- seq(2014, 2014 - N_all_year_obs + 1, -1) # Range of years observed
-N_obs_tree <- sample(10:N_all_year_obs, size = N_tree, replace=TRUE) # num years observed per tree
+N_obs_tree <- sample(20:N_all_year_obs, size = N_tree, replace=TRUE) # num years observed per tree
 N_obs <- sum(N_obs_tree) # total num of observations
 
 # GDD data simulation
@@ -46,7 +45,7 @@ beta_pre <- -0.01
 sigma <- 0.3
 
 # Test hyperparameters
-m_log_rho <- 1.2
+m_log_rho <- 3.2
 s_log_rho <- 0.3
 log_rho <- rnorm(K_sp, mean=m_log_rho, sd=s_log_rho)
 
@@ -131,8 +130,7 @@ data_list <- list(
   log_rw_obs = log_rw_sim
 )
 
-# gp_model <- stan_model('GP_multispecies.stan')
-gp_model <- stan_model('stan/GP_multispecies.stan')
+gp_model <- stan_model('GP_multispecies.stan')
 fit1 <- sampling(gp_model, data = data_list, chains = 4, cores = 4, 
                  iter = 2000, warmup = 1000, save_warmup = FALSE)
 
@@ -140,22 +138,17 @@ diagnostics <- util$extract_hmc_diagnostics(fit1)
 util$check_all_hmc_diagnostics(diagnostics)
 
 samples <- util$extract_expectand_vals(fit1)
-util$check_all_expectand_diagnostics(samples)
+params <- c("alpha", "m_alpha", "s_alpha", "beta_tilde_GDD", "m_beta_GDD", "s_beta_GDD", "beta_tmp",
+            "beta_pre", "sigma", "log_tilde_rho", "m_log_rho", "s_log_rho", "log_tilde_gamma", "m_log_gamma", "s_log_gamma");
+base_samples <- util$filter_expectands(samples, params, check_arrays = TRUE)
+util$check_all_expectand_diagnostics(base_samples)
+
+# util$plot_pairs_by_chain(samples[['m_log_gamma']], 'm_log_gamma',
+#                          samples[['m_log_rho']], 'm_log_rho')
+# 
+# util$plot_pairs_by_chain(samples[['sigma']], 'sigma',
+#                          samples[['s_log_rho']], 's_log_rho')
 
 
-# util$plot_div_pairs('alpha[1]', 's_alpha', samples, diagnostics, transforms = list('s_alpha' = 1))
-# 
-# i <- 4
-# idxs <- start[i]:end[i]
-# names <- paste0('f[', idxs, ']')
-# util$plot_conn_pushforward_quantiles(samples, names, data_list$year_obs[idxs], display_ylim = c(-1,2))
-# lines(x = data_list$year_obs[idxs], y = f[idxs], col = "black", lwd = 2)
-# points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
-# 
-# names <- paste0('log_rw_pred[', idxs, ']')
-# util$plot_conn_pushforward_quantiles(samples, names, data_list$year_obs[idxs], display_ylim = c(-1,2))
-# lines(x = data_list$year_obs[idxs], y = f[start[i]:end[i]], col = "white", lwd = 4)
-# lines(x = data_list$year_obs[idxs], y = f[start[i]:end[i]], col = "black", lwd = 2)
-# points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], col = "white", cex = 2, pch = 20)
-# points(x = data_list$year_obs[idxs], y = data_list$log_rw_obs[idxs], pch = 20)
+
 
