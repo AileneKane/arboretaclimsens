@@ -98,7 +98,7 @@ rstan_options(auto_write = TRUE)
 
 setwd("C:/Temporal Ecology Lab/arboretaclimsens/Model")
 gp_model <- stan_model('GP_multispecies.stan')
-fit1 <- sampling(gp_model, data = data_list, chains = 4, cores = 4, save_warmup = FALSE)
+fit1 <- sampling(gp_model, data = data_list, chains = 4, cores = 4, save_warmup = FALSE, seed = 12345)
 
 util <- new.env()
 source('mcmc_analysis_tools_rstan.R', local=util)
