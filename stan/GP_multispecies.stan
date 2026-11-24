@@ -77,7 +77,7 @@ transformed parameters{
   alpha = m_alpha + s_alpha * alpha_tilde;
   
   vector[K] rho;
-  rho = exp(m_log_rho + s_log_rho * log_tilde_rho);
+  rho = 1 + exp(m_log_rho + s_log_rho * log_tilde_rho);
   
   vector[K] gamma;
   gamma = exp(m_log_gamma + s_log_gamma * log_tilde_gamma);
@@ -132,11 +132,11 @@ model {
 generated quantities {
   vector[N_obs] f;
   array[N_obs]real log_rw_pred;
-  
+
   for (i in 1:N_tree){
-    f[start[i]:end[i]] = gp_pred_rng(year_obs[start[i]:end[i]], log_rw_obs[start[i]:end[i]], 
+    f[start[i]:end[i]] = gp_pred_rng(year_obs[start[i]:end[i]], log_rw_obs[start[i]:end[i]],
     year_obs[start[i]:end[i]], y_clim[start[i]:end[i]], gamma[sp_tree[i]], rho[sp_tree[i]], sigma, 1e-10);
-  
+
     log_rw_pred[start[i]:end[i]] = normal_rng(f[start[i]:end[i]], sigma);
   }
 }
